@@ -1,0 +1,88 @@
+package org.firstinspires.ftc.teamcode;
+
+//import com.disnodeteam.dogecv.CameraViewDisplay;
+//import com.disnodeteam.dogecv.DogeCV;
+//import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
+//import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+
+import static android.R.attr.left;
+import static android.R.attr.right;
+import static android.R.attr.wallpaperCloseEnterAnimation;
+
+/**
+ * Created by femukund on 10/29/2017.
+ */
+@TeleOp
+public class ExtremeBotDrive extends LinearOpMode {
+    Robot robot = new Robot();
+
+    double leftMotorTgtPower = 0;
+    double rightMotorTgtPower = 0;
+    // plz work PLZZZ
+    // Arm
+    double liftBackMotorTgtPower = .1;
+    double frontArmServo = 0.0;
+    double backArmServo = 0.0;
+    double stopServo = 0.0;
+    double positionSS = 0.0;
+    //GoldAlignDetector goldDetector;
+    //SamplingOrderDetector detector;
+
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        robot.init(hardwareMap, this);
+        telemetry.update();
+
+
+        // Wait for game to start (driver presses PLAY
+        waitForStart();
+
+        // run until driver presses STOP
+        while (opModeIsActive())
+        //while (opModeIsActive() && (runtime.seconds() < 31.0))
+        {
+            drive();
+        }
+    }
+
+    // drive
+    public void drive() {
+        driveWithTwoJoysticks();
+
+        //telemetry.addData("IsAligned" , goldDetector.getAligned()); // Is the bot aligned with the gold mineral
+        //telemetry.addData("X Pos" , goldDetector.getXPosition()); // Gold X pos.
+        //telemetry.addData("Current Order" , detector.getCurrentOrder().toString()); // The current result for the frame
+        //telemetry.addData("Last Order" , detector.getLastOrder().toString()); // The last known result
+        telemetry.update();
+    }
+
+    // drive with joysticks
+    public void driveWithTwoJoysticks() {
+        double max;
+        // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
+        // In this mode the Left stick moves the robot fwd and back and crabs left and right,
+        // the Right stick tank turns left and right
+        double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+        double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+        double speedRF = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+        double speedRB = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+
+
+        // Clip values so that they are within -1 & +1
+        speedLF = Range.clip(speedLF, -1, 1);
+        speedLB = Range.clip(speedLB, -1, 1);
+        speedRF = Range.clip(speedRF, -1, 1);
+        speedRB = Range.clip(speedRB, -1, 1);
+
+        // Set speed to motors
+        robot.leftFrontMotor.setPower(speedLF);
+        robot.leftBackMotor.setPower(speedLB);
+        robot.rightFrontMotor.setPower(speedRF);
+        robot.rightBackMotor.setPower(speedRB);
+
+    }
+}
