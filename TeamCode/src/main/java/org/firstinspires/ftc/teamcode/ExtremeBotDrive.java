@@ -31,6 +31,12 @@ public class ExtremeBotDrive extends LinearOpMode {
     //GoldAlignDetector goldDetector;
     //SamplingOrderDetector detector;
 
+    double[] p = {1, 1, 1, 1};
+    //leftfront = 0
+    //rightfront = 1
+    //leftback = 2
+    //rightback = 3
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -52,11 +58,6 @@ public class ExtremeBotDrive extends LinearOpMode {
     // drive
     public void drive() {
         driveWithTwoJoysticks();
-
-        //telemetry.addData("IsAligned" , goldDetector.getAligned()); // Is the bot aligned with the gold mineral
-        //telemetry.addData("X Pos" , goldDetector.getXPosition()); // Gold X pos.
-        //telemetry.addData("Current Order" , detector.getCurrentOrder().toString()); // The current result for the frame
-        //telemetry.addData("Last Order" , detector.getLastOrder().toString()); // The last known result
         telemetry.update();
     }
 
@@ -79,10 +80,15 @@ public class ExtremeBotDrive extends LinearOpMode {
         speedRB = Range.clip(speedRB, -1, 1);
 
         // Set speed to motors
-        robot.leftFrontMotor.setPower(speedLF);
-        robot.leftBackMotor.setPower(speedLB);
-        robot.rightFrontMotor.setPower(speedRF);
-        robot.rightBackMotor.setPower(speedRB);
-
+        //leftfront = 0
+        //rightfront = 1
+        //leftback = 2
+        //rightback = 3
+        robot.leftFrontMotor.setPower(p[0] * speedLF);
+        robot.leftBackMotor.setPower(p[2] * speedLB);
+        robot.rightFrontMotor.setPower(p[1] * speedRF);
+        robot.rightBackMotor.setPower(p[3] * speedRB);
     }
+
+
 }

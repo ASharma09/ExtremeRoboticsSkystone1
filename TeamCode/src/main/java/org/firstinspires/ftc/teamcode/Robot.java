@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by femukund on 10/22/2017.
+ * Extreme Robotics 2019
  */
 
 public class Robot
@@ -32,20 +32,9 @@ public class Robot
     DcMotor leftFrontMotor;
     DcMotor rightBackMotor;
     DcMotor leftBackMotor;
-/*
-    // Arm motors & servos
-    DcMotor actuatorMotor;
-    DcMotor omniMotor;
-    DcMotor cascadingMotor;
-    DcMotor bootMotor;
 
-    Servo sideServo;
-    Servo sweepServo;
-    Servo lockBackServo;
-    Servo lockFrontServo;
-*/
-    // Lift & Land motor
 
+    double[] paramA = {0, 1, -1};
 
     public void init(HardwareMap ProtohwMap, LinearOpMode linearOpMode)
     {
@@ -95,14 +84,16 @@ public class Robot
         WaitMillis(millis);
     }
 
+    //OMNI METHODS
+
     // Drive forward without encoder. drive based on time.
     //CORRECTTTTTTT
     public void OdriveForward(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
@@ -110,10 +101,10 @@ public class Robot
     //CORRECTTTTT
     public void OdriveBackwards(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        rightFrontMotor.setPower(-power);
-        leftBackMotor.setPower(-power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
@@ -121,10 +112,10 @@ public class Robot
     //EDITED
     public void OdriveLeft(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
@@ -132,10 +123,10 @@ public class Robot
     //EDITED
     public void OdriveRight(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(-power);
-        rightFrontMotor.setPower(-power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
@@ -143,10 +134,10 @@ public class Robot
     //EDITED
     public void OturnRight(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(-power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
@@ -154,67 +145,149 @@ public class Robot
     //EDITED
     public void OturnLeft(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        leftBackMotor.setPower(-power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
+    //MECANUM METHODS
+
     public void MdriveForward(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
     public void MdriveBackward(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        rightFrontMotor.setPower(-power);
-        leftBackMotor.setPower(-power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
     public void MdriveLeft(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        rightFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
     public void MdriveRight(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        rightFrontMotor.setPower(-power);
-        leftBackMotor.setPower(-power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
     public void MturnLeft(double power, long millis)
     {
-        leftFrontMotor.setPower(-power);
-        rightFrontMotor.setPower(power);
-        leftBackMotor.setPower(-power);
-        rightBackMotor.setPower(power);
+        leftFrontMotor.setPower(paramA[2] * power);
+        rightFrontMotor.setPower(paramA[1] * power);
+        leftBackMotor.setPower(paramA[2] * power);
+        rightBackMotor.setPower(paramA[1] * power);
         WaitMillis(millis);
     }
 
     public void MturnRight(double power, long millis)
     {
-        leftFrontMotor.setPower(power);
-        rightFrontMotor.setPower(-power);
-        leftBackMotor.setPower(power);
-        rightBackMotor.setPower(-power);
+        leftFrontMotor.setPower(paramA[1] * power);
+        rightFrontMotor.setPower(paramA[2] * power);
+        leftBackMotor.setPower(paramA[1] * power);
+        rightBackMotor.setPower(paramA[2] * power);
         WaitMillis(millis);
     }
 
+    //ENCODER METHODS
 
+    public void encoderDriveBack(double ticks) {
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        opMode.telemetry.addData("current rightFrontMotor encoder position: ", rightFrontMotor.getCurrentPosition());
+        opMode.telemetry.update();
+
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(-drivePower);
+            rightFrontMotor.setPower(-drivePower);
+            leftBackMotor.setPower(-drivePower);
+            leftFrontMotor.setPower(-drivePower);
+        }
+
+        opMode.telemetry.addData("current rightFrontMotor encoder position: ", rightFrontMotor.getCurrentPosition());
+        opMode.telemetry.update();
+
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void encoderDriveForward(double ticks) {
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(drivePower);
+            rightFrontMotor.setPower(drivePower);
+            leftBackMotor.setPower(drivePower);
+            leftFrontMotor.setPower(drivePower);
+        }
+
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void encoderDriveRight(double ticks) {
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(drivePower);
+            rightFrontMotor.setPower(-drivePower);
+            leftBackMotor.setPower(-drivePower);
+            leftFrontMotor.setPower(drivePower);
+        }
+    }
+
+    public void encoderDriveLeft(double ticks) {
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(-drivePower);
+            rightFrontMotor.setPower(drivePower);
+            leftBackMotor.setPower(drivePower);
+            leftFrontMotor.setPower(-drivePower);
+        }
+
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void encoderTurnRight(double ticks) {
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(-drivePower);
+            rightFrontMotor.setPower(-drivePower);
+            leftBackMotor.setPower(drivePower);
+            leftFrontMotor.setPower(drivePower);
+        }
+
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void encoderTurnLeft(double ticks) {
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while (rightFrontMotor.getCurrentPosition() <= ticks) {
+            rightBackMotor.setPower(drivePower);
+            rightFrontMotor.setPower(drivePower);
+            leftBackMotor.setPower(-drivePower);
+            leftFrontMotor.setPower(-drivePower);
+        }
+
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
 }
