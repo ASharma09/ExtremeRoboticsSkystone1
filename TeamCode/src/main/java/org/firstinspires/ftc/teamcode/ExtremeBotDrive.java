@@ -28,6 +28,8 @@ public class ExtremeBotDrive extends LinearOpMode {
     double backArmServo = 0.0;
     double stopServo = 0.0;
     double positionSS = 0.0;
+    double testRightServo = 0.0;
+    double testLeftServo = 0.0;
     //GoldAlignDetector goldDetector;
     //SamplingOrderDetector detector;
 
@@ -58,7 +60,21 @@ public class ExtremeBotDrive extends LinearOpMode {
     // drive
     public void drive() {
         driveWithTwoJoysticks();
+        testWheelServo();
         telemetry.update();
+    }
+
+    public void testWheelServo () {
+        if (gamepad1.a)
+        {
+            robot.testLeftServo.setPosition(1);
+            robot.testRightServo.setPosition(-1);
+        }
+        if (gamepad1.b)
+        {
+            robot.testLeftServo.setPosition(-1);
+            robot.testRightServo.setPosition(1);
+        }
     }
 
     // drive with joysticks
