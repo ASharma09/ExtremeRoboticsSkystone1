@@ -22,13 +22,14 @@ public class OmniTest extends LinearOpMode {
 
             waitForStart();
 
-            robot.MdriveForward(drivePower, 2000);
+            /*robot.MdriveForward(drivePower, 2000);
             robot.MdriveBackward(drivePower, 2000);
             robot.MdriveRight(drivePower, 2000);
             robot.MdriveLeft(drivePower, 2000);
             robot.MturnLeft(drivePower, 2000);
-            robot.MturnRight(drivePower, 2000);
+            robot.MturnRight(drivePower, 2000); */
 
+            //robot.encoderDriveBack(drivePower, 12, 12, 30);
         }
     }
 
