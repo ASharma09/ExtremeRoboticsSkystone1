@@ -13,11 +13,11 @@ public class encoderDrive extends LinearOpMode {
     Robot robot = new Robot(); //use from robot class
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // eg: ANDYMARK Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+            (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
@@ -53,7 +53,12 @@ public class encoderDrive extends LinearOpMode {
 
         //put in autonomous commands from encoderDrive
         //encoderDrive(DRIVE_SPEED, #, #, #);
-
+        driveEncoder(DRIVE_SPEED, 3, 3, 5.0);
+        driveEncoder(DRIVE_SPEED, -12, -12, 5.0);
+        driveEncoder(DRIVE_SPEED, 12, -12, 5.0);
+        driveEncoder(DRIVE_SPEED, -12, 12, 5.0);
+        driveSide(DRIVE_SPEED, -1, 12, 5.0);
+        driveSide(DRIVE_SPEED, 1, 12, 5.0);
 
         //get servos to move
 
@@ -62,9 +67,11 @@ public class encoderDrive extends LinearOpMode {
     }
 
 
-    public void driveEncoder(double speed, double leftInch, double rightInch, double timeouts) {
+    public void driveEncoder(double speed, double leftInch, double rightInch, double timeout) {
         int newLeftFrontTarget;
         int newRightFrontTarget;
+        int newLeftBackTarget;
+        int newRightBackTarget;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -75,8 +82,8 @@ public class encoderDrive extends LinearOpMode {
             newRightFrontTarget = robot.rightFrontMotor.getCurrentPosition() + (int)(rightInch * COUNTS_PER_INCH);
 
             //new target for the back wheels
-            int newLeftBackTarget = robot.leftBackMotor.getCurrentPosition() + (int)(leftInch * COUNTS_PER_INCH);
-            int newRightBackTarget = robot.rightBackMotor.getCurrentPosition() + (int)(rightInch * COUNTS_PER_INCH);
+            newLeftBackTarget = robot.leftBackMotor.getCurrentPosition() + (int)(leftInch * COUNTS_PER_INCH);
+            newRightBackTarget = robot.rightBackMotor.getCurrentPosition() + (int)(rightInch * COUNTS_PER_INCH);
 
             //set target position for front wheels
             robot.leftFrontMotor.setTargetPosition(newLeftFrontTarget);
@@ -100,7 +107,7 @@ public class encoderDrive extends LinearOpMode {
             robot.rightBackMotor.setPower(Math.abs(speed));
 
             while (opModeIsActive() &&
-                    (runtime.seconds() < timeouts) &&
+                    (runtime.seconds() < timeout) &&
                     (robot.leftFrontMotor.isBusy() && robot.rightFrontMotor.isBusy()
                             && robot.leftBackMotor.isBusy() && robot.rightBackMotor.isBusy())) {
 
@@ -135,7 +142,7 @@ public class encoderDrive extends LinearOpMode {
 
     }
 
-    public void driveSide (double speed, int direction, int inch, double time) {
+    public void driveSide (double speed, int direction, int inch, double timeout) {
         int leftF;
         int leftB;
         int rightF;
@@ -176,7 +183,6 @@ public class encoderDrive extends LinearOpMode {
                 robot.rightBackMotor.setTargetPosition(rightB);
             }
 
-
             // Turn On RUN_TO_POSITION
             robot.leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -191,7 +197,7 @@ public class encoderDrive extends LinearOpMode {
             robot.rightBackMotor.setPower(Math.abs(speed));
 
             while (opModeIsActive() &&
-                    (runtime.seconds() < time) &&
+                    //(runtime.seconds() < time) &&
                     (robot.leftFrontMotor.isBusy() && robot.rightFrontMotor.isBusy()
                             && robot.leftBackMotor.isBusy() && robot.rightBackMotor.isBusy())) {
 
