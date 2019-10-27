@@ -53,8 +53,10 @@ public class Robot
         rightBackMotor = hwMap.dcMotor.get("rightBackMotor");
       //  testRightServo = hwMap.servo.get("testRightServo");
        // testLeftServo = hwMap.servo.get("testLeftServo");
-        leftFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFrontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Arm
       /*  actuatorMotor = hwMap.dcMotor.get("actuatorMotor");
