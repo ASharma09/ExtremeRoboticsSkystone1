@@ -93,16 +93,16 @@ public class ExtremeBotDrive extends LinearOpMode {
         robot.rightBackMotor.setPower(p[3] * speedRB);
     }
 
-    public void testWheelServo () {
-        if (gamepad1.a)
-        {
-            robot.testLeftServo.setPosition(1);
-            robot.testRightServo.setPosition(-1);
-        }
-        if (gamepad1.b)
-        {
-            robot.testLeftServo.setPosition(-1);
-            robot.testRightServo.setPosition(1);
-        }
-    }
+//    public void testWheelServo () {
+//        if (gamepad1.a)
+//        {
+//            robot.testLeftServo.setPosition(1);
+//            robot.testRightServo.setPosition(-1);
+//        }
+//        if (gamepad1.b)
+//        {
+//            robot.testLeftServo.setPosition(-1);
+//            robot.testRightServo.setPosition(1);
+//        }
+//    }
 }
