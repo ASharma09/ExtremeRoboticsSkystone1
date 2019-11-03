@@ -72,8 +72,8 @@ public class ExtremeBotDrive extends LinearOpMode {
         // the Right stick tank turns left and right
         double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
         double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-        double speedRF = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
-        double speedRB = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+        double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+        double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
 
         // Clip values so that they are within -1 & +1
