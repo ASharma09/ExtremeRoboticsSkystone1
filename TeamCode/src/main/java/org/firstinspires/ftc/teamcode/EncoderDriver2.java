@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "drive2", group = "ExtremeBot")
 
-public class EncoderDriver2pt2ElectricBoogaloo extends LinearOpMode {
+public class EncoderDriver2 extends LinearOpMode {
     Robot robot = new Robot(); //use from robot class
     private ElapsedTime runtime = new ElapsedTime();
 

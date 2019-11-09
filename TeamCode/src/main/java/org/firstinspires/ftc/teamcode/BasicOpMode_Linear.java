@@ -61,6 +61,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor leftFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor rightFrontDrive = null;
+    private DcMotor cascadingMotor = null;
 
 
     @Override
@@ -75,6 +76,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+        cascadingMotor = hardwareMap.get(DcMotor.class, "cascadingMotor");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -82,6 +84,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+            cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
@@ -98,8 +101,10 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double leftFrontPower;
             double leftBackPower;
             double rightFrontPower;
-            double rightBackPower;*/
+            double rightBackPower;
 
+ */
+            double cascadingPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -112,6 +117,14 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
+            if (gamepad2.dpad_up){
+                cascadingPower = 1;
+            }
+            else
+                cascadingPower = 0;
+            if (gamepad2.dpad_down){
+                cascadingPower = -1;
+            }
 
 /*            double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
@@ -142,6 +155,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             leftBackDrive.setPower(speedLB);
             rightFrontDrive.setPower(speedRF);
             rightBackDrive.setPower(speedRB);
+            cascadingMotor.setPower(cascadingPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

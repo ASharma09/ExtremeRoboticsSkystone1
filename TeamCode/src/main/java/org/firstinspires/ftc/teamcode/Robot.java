@@ -45,13 +45,13 @@ public class Robot extends LinearOpMode
         // Wheels
         leftFrontMotor = hwMap.dcMotor.get("leftFrontMotor");
         leftBackMotor = hwMap.dcMotor.get("leftBackMotor");
-        rightFrontMotor = hwMap.dcMotor.get("rightFrontMotor");
+        //rightFrontMotor = hwMap.dcMotor.get("rightFrontMotor");
         rightBackMotor = hwMap.dcMotor.get("rightBackMotor");
       //  testRightServo = hwMap.servo.get("testRightServo");
        // testLeftServo = hwMap.servo.get("testLeftServo");
         leftFrontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Arm
