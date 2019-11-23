@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -54,14 +55,18 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="Basic: Linear OpMode2", group="Linear Opmode")
 //@Disabled
 public class BasicOpMode_Linear extends LinearOpMode {
+    Robot robot = new Robot();
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftBackDrive = null;
-    private DcMotor leftFrontDrive = null;
-    private DcMotor rightBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor cascadingMotor = null;
+//    private ElapsedTime runtime = new ElapsedTime();
+//    public DcMotor leftBackDrive = null;
+//    public DcMotor leftFrontDrive = null;
+//    public DcMotor rightBackDrive = null;
+//    public DcMotor rightFrontDrive = null;
+//    public DcMotor cascadingMotor = null;
+//    public DcMotor angleMotor = null;
+//    public Servo leftServo = null;
+//    public Servo rightServo = null;
 
 
     @Override
@@ -72,25 +77,29 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
-        cascadingMotor = hardwareMap.get(DcMotor.class, "cascadingMotor");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-            leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-            leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-            rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-            rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-            cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
+//        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
+//        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+//        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
+//        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+//        cascadingMotor = hardwareMap.get(DcMotor.class, "cascadingMotor");
+//        angleMotor = hardwareMap.get(DcMotor.class, "angleMotor");
+//        leftServo = hardwareMap.get(Servo.class, "leftServo");
+//        rightServo = hardwareMap.get(Servo.class, "rightServo");
+//
+//        // Most robots need the motor on one side to be reversed to drive forward
+//        // Reverse the motor that runs backwards when connected directly to the battery
+//            leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+//            leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//            rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//            rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+//            cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
+//            angleMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
+        robot.runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -105,6 +114,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
  */
             double cascadingPower;
+            double anglePower;
+
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -117,15 +128,49 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            if (gamepad2.dpad_up){
+            if (gamepad2.dpad_up)
+            {
                 cascadingPower = 1;
             }
             else
                 cascadingPower = 0;
-            if (gamepad2.dpad_down){
+            if (gamepad2.dpad_down)
+            {
                 cascadingPower = -1;
             }
 
+            if (gamepad2.dpad_right)
+            {
+                anglePower = 1;
+            }
+            else
+                anglePower = 0;
+            if (gamepad2.dpad_left)
+            {
+                anglePower = -1;
+            }
+
+//            if (gamepad2.a)
+//            {
+//                //rightServo.setDirection(Servo.Direction.FORWARD);
+//                //rightServo.setDirection(Servo.Direction.FORWARD);
+//                //leftServo.setDirection(Servo.Direction.REVERSE);
+//                robot.leftServo.setPosition(0.7);
+//                robot.rightServo.setPosition(0.3);
+//            }
+//            telemetry.addData("left servo position", robot.leftServo.getPosition());
+//            telemetry.addData("right servo position", robot.rightServo.getPosition());
+//            telemetry.update();
+//            if (gamepad2.b)
+//            {
+//                //rightServo.setDirection(Servo.Direction.REVERSE);
+//                //leftServo.setDirection(Servo.Direction.FORWARD);
+//                robot.leftServo.setPosition(0.3);
+//                robot.rightServo.setPosition(0.7);
+//            }
+//            telemetry.addData("left servo position", robot.leftServo.getPosition());
+//            telemetry.addData("right servo position", robot.rightServo.getPosition());
+//            telemetry.update();
 /*            double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
@@ -151,14 +196,15 @@ public class BasicOpMode_Linear extends LinearOpMode {
             rightBackDrive.setPower(rightPower);
             rightFrontDrive.setPower(rightPower);
             //rightDrive.setPower(rightPower);*/
-            leftFrontDrive.setPower(speedLF);
-            leftBackDrive.setPower(speedLB);
-            rightFrontDrive.setPower(speedRF);
-            rightBackDrive.setPower(speedRB);
-            cascadingMotor.setPower(cascadingPower);
+            robot.leftFrontDrive.setPower(speedLF);
+            robot.leftBackDrive.setPower(speedLB);
+            robot.rightFrontDrive.setPower(speedRF);
+            robot.rightBackDrive.setPower(speedRB);
+            robot.cascadingMotor.setPower(cascadingPower);
+            robot.angleMotor.setPower(anglePower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLF, speedLB, speedRF, speedRB);
             telemetry.update();
         }

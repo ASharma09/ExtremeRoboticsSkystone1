@@ -8,13 +8,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 //import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
-import static android.R.attr.left;
-import static android.R.attr.right;
-import static android.R.attr.wallpaperCloseEnterAnimation;
 
 /**
  * Created by femukund on 10/29/2017.
  */
+/*
 @TeleOp
 public class ExtremeBotDrive extends LinearOpMode {
     Robot robot = new Robot();
@@ -87,10 +85,10 @@ public class ExtremeBotDrive extends LinearOpMode {
         //rightfront = 1
         //leftback = 2
         //rightback = 3
-        robot.leftFrontMotor.setPower(p[0] * speedLF);
-        robot.leftBackMotor.setPower(p[2] * speedLB);
-        robot.rightFrontMotor.setPower(p[1] * speedRF);
-        robot.rightBackMotor.setPower(p[3] * speedRB);
+//        robot.leftFrontMotor.setPower(p[0] * speedLF);
+//        robot.leftBackMotor.setPower(p[2] * speedLB);
+//        robot.rightFrontMotor.setPower(p[1] * speedRF);
+//        robot.rightBackMotor.setPower(p[3] * speedRB);
     }
 
 //    public void testWheelServo () {
@@ -106,3 +104,4 @@ public class ExtremeBotDrive extends LinearOpMode {
 //        }
 //    }
 }
+*/

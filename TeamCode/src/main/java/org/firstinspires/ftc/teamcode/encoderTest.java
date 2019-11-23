@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
-
+/*
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "drive by encoder", group = "ExtremeBot")
@@ -22,11 +20,6 @@ public class encoderTest extends LinearOpMode {
     static final double TURN_SPEED = 0.5;
 
     public void runOpMode() {
-
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
         robot.init(hardwareMap, this);
 
         // Send telemetry message to signify robot waiting;
@@ -43,7 +36,7 @@ public class encoderTest extends LinearOpMode {
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0", "Starting at %7d :%7d",
                 robot.leftFrontMotor.getCurrentPosition()
-                /*robot.rightFrontMotor.getCurrentPosition()*/);
+
         telemetry.update();
 
         waitForStart();
@@ -91,15 +84,14 @@ public class encoderTest extends LinearOpMode {
             while (opModeIsActive() &&
                     (runtime.seconds() < timeout) &&
                     (robot.leftFrontMotor.isBusy() && robot.rightFrontMotor.isBusy()
-                            && robot.leftBackMotor.isBusy() && robot.rightBackMotor.isBusy()
+                            && robot.leftBackDrive.isBusy() && robot.rightBackMotor.isBusy()
                     )
                     && robot.leftFrontMotor.getCurrentPosition() < leftInch) {
 
                 // Display it for the driver.
                // telemetry.addData("Path1", "Running to %7d :%7d", newLeftFrontTarget, newRightFrontTarget);
                 telemetry.addData("Path2", "Running at %7d :%7d",
-                        robot.leftFrontMotor.getCurrentPosition()/*,
-                        robot.rightFrontMotor.getCurrentPosition()*/);
+                        robot.leftFrontMotor.getCurrentPosition()
 
                 telemetry.update();
             }
@@ -121,3 +113,4 @@ public class encoderTest extends LinearOpMode {
 
     }
 }
+*/

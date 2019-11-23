@@ -32,16 +32,16 @@ public class ExtremeBotDrive2 extends LinearOpMode {
         DcMotor rightFrontMotor;
         DcMotor leftFrontMotor;
         DcMotor rightBackMotor;
-        DcMotor leftBackMotor;
+        DcMotor leftBackDrive;
 
         leftFrontMotor = hwMap.dcMotor.get("leftFrontMotor");
-        leftBackMotor = hwMap.dcMotor.get("leftBackMotor");
+        leftBackDrive = hwMap.dcMotor.get("leftBackDrive");
         //rightFrontMotor = hwMap.dcMotor.get("rightFrontMotor");
         rightBackMotor = hwMap.dcMotor.get("rightBackMotor");
         //  testRightServo = hwMap.servo.get("testRightServo");
         // testLeftServo = hwMap.servo.get("testLeftServo");
         leftFrontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftBackMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         //rightFrontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -124,7 +124,7 @@ public class ExtremeBotDrive2 extends LinearOpMode {
         //leftback = 2
         //rightback = 3
         robot.leftFrontMotor.setPower(p[0] * speedLF);
-        robot.leftBackMotor.setPower(p[2] * speedLB);
+        robot.leftBackDrive.setPower(p[2] * speedLB);
         robot.rightFrontMotor.setPower(p[1] * speedRF);
         robot.rightBackMotor.setPower(p[3] * speedRB);
     }
