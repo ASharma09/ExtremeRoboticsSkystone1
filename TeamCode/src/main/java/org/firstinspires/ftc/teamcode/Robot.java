@@ -31,8 +31,8 @@ public class Robot
     DcMotor leftFrontDrive;
     DcMotor rightBackDrive;
     DcMotor rightFrontDrive;
-    DcMotor cascadingMotor;
-    DcMotor angleMotor;
+//    DcMotor cascadingMotor;
+//    DcMotor angleMotor;
     //Servo leftServo;
     //Servo rightServo;
 
@@ -50,8 +50,8 @@ public class Robot
         leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontMotor");
         rightBackDrive = hwMap.get(DcMotor.class, "rightBackMotor");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontMotor");
-        cascadingMotor = hwMap.get(DcMotor.class, "cascadingMotor");
-        angleMotor = hwMap.get(DcMotor.class, "angleMotor");
+//        cascadingMotor = hwMap.get(DcMotor.class, "cascadingMotor");
+//        angleMotor = hwMap.get(DcMotor.class, "angleMotor");
         //leftServo = hwMap.get(Servo.class, "leftServo");
         //rightServo = hwMap.get(Servo.class, "rightServo");
 
@@ -61,8 +61,8 @@ public class Robot
         leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
-        angleMotor.setDirection(DcMotor.Direction.FORWARD);
+//        cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
+//        angleMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Arm
       /*  actuatorMotor = hwMap.dcMotor.get("actuatorMotor");

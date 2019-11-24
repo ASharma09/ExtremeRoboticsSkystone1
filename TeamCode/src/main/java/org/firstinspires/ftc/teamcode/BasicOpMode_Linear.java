@@ -71,6 +71,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap, this);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -104,6 +105,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+
             // Setup a variable for each drive wheel to save power level for telemetry
 /*            double leftPower;
             double rightPower;
@@ -127,28 +129,46 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
             double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+//
 
-            if (gamepad2.dpad_up)
-            {
-                cascadingPower = 1;
-            }
-            else
-                cascadingPower = 0;
-            if (gamepad2.dpad_down)
-            {
-                cascadingPower = -1;
-            }
+            if (gamepad1.a) {
+                robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            if (gamepad2.dpad_right)
-            {
-                anglePower = 1;
+                robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            else
-                anglePower = 0;
-            if (gamepad2.dpad_left)
-            {
-                anglePower = -1;
-            }
+//            if (gamepad2.dpad_up)
+//            {
+//                cascadingPower = 1;
+//            }
+//            else
+//                cascadingPower = 0;
+//            if (gamepad2.dpad_down)
+//            {
+//                cascadingPower = -1;
+//            }
+//
+//            if (gamepad2.dpad_right)
+//            {
+//                anglePower = 1;
+//            }
+//            else
+//                anglePower = 0;
+//            if (gamepad2.dpad_left)
+//            {
+//                anglePower = -1;
+//            }
+
+            //telemetry.addData("LFT, RFT", "Running to %7d :%7d", newLeftFrontTarget, newRightFrontTarget);
+//            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
+//                    robot.leftFrontDrive.getCurrentPosition(),
+//                    robot.rightFrontDrive.getCurrentPosition());
+            //telemetry.update();
 
 //            if (gamepad2.a)
 //            {
@@ -200,12 +220,15 @@ public class BasicOpMode_Linear extends LinearOpMode {
             robot.leftBackDrive.setPower(speedLB);
             robot.rightFrontDrive.setPower(speedRF);
             robot.rightBackDrive.setPower(speedRB);
-            robot.cascadingMotor.setPower(cascadingPower);
-            robot.angleMotor.setPower(anglePower);
+//            robot.cascadingMotor.setPower(cascadingPower);
+//            robot.angleMotor.setPower(anglePower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLF, speedLB, speedRF, speedRB);
+            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
+                    robot.leftFrontDrive.getCurrentPosition(),
+                    robot.rightFrontDrive.getCurrentPosition());
             telemetry.update();
         }
         }
