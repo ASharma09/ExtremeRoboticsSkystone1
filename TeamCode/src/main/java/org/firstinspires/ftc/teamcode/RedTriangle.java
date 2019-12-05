@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by femukund on 11/5/2017.
  */
 
-@Autonomous(name="BlueTriangle")
-public class BlueTriangle extends encoderDrive {
+@Autonomous(name="RedTriangle")
+public class RedTriangle extends encoderDrive {
     //Robot robot = new Robot();
     //BasicOpMode_Linear basic = new BasicOpMode_Linear();
 
@@ -27,16 +27,14 @@ public class BlueTriangle extends encoderDrive {
         waitForStart();
 
         encoderForward(speed, 2494);
-        encoderStrafe(speed, 1, 7905); //skystone position 2
+        encoderStrafe(speed, -1, 7905); //skystone position 2
         encoderForward(speed, 440);
         encoderBack(speed, 600);
-        encoderStrafe(speed, -1, 9000);
+        encoderStrafe(speed, 1, 9000);
         encoderForward(speed, 830);
         //latch onto foundation
         encoderBack(speed, 3238);
-        encoderStrafe(speed, 1, 5500); //onto blue line
-
-
+        encoderStrafe(speed, -1, 5500); //onto blue line
     }
 }
 

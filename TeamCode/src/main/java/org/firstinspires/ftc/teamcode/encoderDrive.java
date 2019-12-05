@@ -21,6 +21,10 @@ public class encoderDrive extends LinearOpMode {
 
     double[] factor = {1, 1, 1, 1};
 
+    //turn 90 degrees is 2360
+    //100 ticks is about 1 inch when going forward
+    //111 ticks is about 1 inch strafing
+
     //OMNI METHODS
     //Robot robot = new Robot(); //use from robot class
     //private ElapsedTime runtime = new ElapsedTime();
@@ -101,7 +105,10 @@ public class encoderDrive extends LinearOpMode {
 
     }
 
-    public void driveEncoder(double leftSpeed, double rightSpeed, int leftTicks, int rightTicks) {
+    public void encoderForward(double speed, int ticks) {
+        stopAndResetEncoder();
+        runUsingEncoder();
+
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftBackTarget;
@@ -114,15 +121,14 @@ public class encoderDrive extends LinearOpMode {
             //new target for the front wheels
             //newLeftFrontTarget = (int)(leftTicks * COUNTS_PER_INCH);
             //newRightFrontTarget = robot.rightFrontMotor.getCurrentPosition() + (int)(rightTicks * COUNTS_PER_INCH);
-            newLeftFrontTarget = leftTicks;
-            newRightFrontTarget = rightTicks;
+            newLeftFrontTarget = ticks;
+            newRightFrontTarget = ticks;
 
             //new target for the back wheels
             //newLeftBackTarget = robot.leftBackDrive.getCurrentPosition() + (int)(leftInch * COUNTS_PER_INCH);
             //newRightBackTarget = robot.rightBackMotor.getCurrentPosition() + (int)(rightInch * COUNTS_PER_INCH);
-            newLeftBackTarget = leftTicks;
-            newRightBackTarget = rightTicks;
-
+            newLeftBackTarget = ticks;
+            newRightBackTarget = ticks;
 
             //set target position for front wheels
             robot.leftFrontDrive.setTargetPosition(newLeftFrontTarget);
@@ -134,16 +140,16 @@ public class encoderDrive extends LinearOpMode {
 
             runToPosition();
 
-            robot.leftFrontDrive.setPower(leftSpeed);
-            robot.leftBackDrive.setPower(leftSpeed);
-            robot.rightBackDrive.setPower(rightSpeed);
-            robot.rightFrontDrive.setPower(rightSpeed);
+            robot.leftFrontDrive.setPower(speed);
+            robot.leftBackDrive.setPower(speed);
+            robot.rightBackDrive.setPower(speed);
+            robot.rightFrontDrive.setPower(speed);
 
             while (opModeIsActive() &&
                     //           (runtime.seconds() < timeout) &&
                     (robot.leftFrontDrive.isBusy() && robot.rightFrontDrive.isBusy() && robot.leftBackDrive.isBusy() && robot.rightBackDrive.isBusy()
                     )
-                    && robot.leftFrontDrive.getCurrentPosition() < leftTicks) {
+                    && robot.leftFrontDrive.getCurrentPosition() < ticks) {
 
                 // Display it for the driver.
                 telemetry.addData("LFT, RFT", "Running to %7d :%7d", newLeftFrontTarget, newRightFrontTarget);
@@ -159,14 +165,12 @@ public class encoderDrive extends LinearOpMode {
             }
 
             stopDriveBase();
-
             runUsingEncoder();
-
         }
 
     }
 
-    public void turnEncoder(double speed, int direction, int leftTicks, int rightTicks) {
+    public void encoderTurn(double speed, int direction, int leftTicks, int rightTicks) {
         stopAndResetEncoder();
         runUsingEncoder();
 
@@ -228,7 +232,10 @@ public class encoderDrive extends LinearOpMode {
         }
     }
 
-    public void driveSide(double speed, int direction, int ticks) {
+    public void encoderStrafe(double speed, int direction, int ticks) {
+        stopAndResetEncoder();
+        runUsingEncoder();
+
         int leftF;
         int leftB;
         int rightF;
@@ -305,7 +312,6 @@ public class encoderDrive extends LinearOpMode {
             }
 
             stopDriveBase();
-            runUsingEncoder();
         }
 
     }

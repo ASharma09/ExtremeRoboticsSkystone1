@@ -26,15 +26,6 @@ public class TestOpMode extends encoderDrive {
 
         waitForStart();
 
-        //driveSide(speed, -1, 1785);
-        driveEncoder(speed, speed, 5000, 5000);
-        encoderBack(speed, 5000);
-        turnEncoder(speed, 1, 5000, 5000);
-        turnEncoder(speed, -1, 5000, 5000);
-        driveSide(speed, 1, 5000);
-        driveSide(speed, -1, 5000);
-
-
     }
 }
 

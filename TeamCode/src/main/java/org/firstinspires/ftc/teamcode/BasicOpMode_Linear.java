@@ -129,7 +129,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
             double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
-//
+
 
             if (gamepad1.a) {
                 robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -164,58 +164,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
 //                anglePower = -1;
 //            }
 
-            //telemetry.addData("LFT, RFT", "Running to %7d :%7d", newLeftFrontTarget, newRightFrontTarget);
-//            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
-//                    robot.leftFrontDrive.getCurrentPosition(),
-//                    robot.rightFrontDrive.getCurrentPosition());
-            //telemetry.update();
-
-//            if (gamepad2.a)
-//            {
-//                //rightServo.setDirection(Servo.Direction.FORWARD);
-//                //rightServo.setDirection(Servo.Direction.FORWARD);
-//                //leftServo.setDirection(Servo.Direction.REVERSE);
-//                robot.leftServo.setPosition(0.7);
-//                robot.rightServo.setPosition(0.3);
-//            }
-//            telemetry.addData("left servo position", robot.leftServo.getPosition());
-//            telemetry.addData("right servo position", robot.rightServo.getPosition());
-//            telemetry.update();
-//            if (gamepad2.b)
-//            {
-//                //rightServo.setDirection(Servo.Direction.REVERSE);
-//                //leftServo.setDirection(Servo.Direction.FORWARD);
-//                robot.leftServo.setPosition(0.3);
-//                robot.rightServo.setPosition(0.7);
-//            }
-//            telemetry.addData("left servo position", robot.leftServo.getPosition());
-//            telemetry.addData("right servo position", robot.rightServo.getPosition());
-//            telemetry.update();
-/*            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-
-            double strafe = gamepad1.left_stick_x;
-            leftFrontPower = Range.clip(drive - turn, -1.0, 1.0) ;
-            leftBackPower = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightBackPower = Range.clip(drive - turn, -1.0, 1.0) ;
-            rightFrontPower = Range.clip(drive + turn, -1.0, 1.0) ;
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
-
-            // Send calculated power to wheels
-            leftBackDrive.setPower(leftBackPower);
-            leftFrontDrive.setPower(leftFrontPower);
-            rightBackDrive.setPower(rightBackPower);
-            rightFrontDrive.setPower(rightFrontPower);
-            leftBackDrive.setPower(leftPower);
-            leftFrontDrive.setPower(leftPower);
-            rightBackDrive.setPower(rightPower);
-            rightFrontDrive.setPower(rightPower);
-            //rightDrive.setPower(rightPower);*/
             robot.leftFrontDrive.setPower(speedLF);
             robot.leftBackDrive.setPower(speedLB);
             robot.rightFrontDrive.setPower(speedRF);
