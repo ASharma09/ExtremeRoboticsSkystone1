@@ -52,49 +52,16 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode2", group="Linear Opmode")
-//@Disabled
-public class BasicOpMode_Linear extends LinearOpMode {
+@TeleOp(name="ScrimmageTeleOp", group="Linear Opmode")
+
+public class ScrimmageTeleOp extends LinearOpMode {
     Robot robot = new Robot();
-
-    // Declare OpMode members.
-//    private ElapsedTime runtime = new ElapsedTime();
-//    public DcMotor leftBackDrive = null;
-//    public DcMotor leftFrontDrive = null;
-//    public DcMotor rightBackDrive = null;
-//    public DcMotor rightFrontDrive = null;
-//    public DcMotor cascadingMotor = null;
-//    public DcMotor angleMotor = null;
-//    public Servo leftServo = null;
-//    public Servo rightServo = null;
-
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-//        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
-//        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-//        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
-//        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
-//        cascadingMotor = hardwareMap.get(DcMotor.class, "cascadingMotor");
-//        angleMotor = hardwareMap.get(DcMotor.class, "angleMotor");
-//        leftServo = hardwareMap.get(Servo.class, "leftServo");
-//        rightServo = hardwareMap.get(Servo.class, "rightServo");
-//
-//        // Most robots need the motor on one side to be reversed to drive forward
-//        // Reverse the motor that runs backwards when connected directly to the battery
-//            leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-//            leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//            rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//            rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//            cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
-//            angleMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
@@ -105,18 +72,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-
-            // Setup a variable for each drive wheel to save power level for telemetry
-/*            double leftPower;
-            double rightPower;
-            double leftFrontPower;
-            double leftBackPower;
-            double rightFrontPower;
-            double rightBackPower;
-
- */
             double cascadingPower;
             double anglePower;
+            double liftPower;
 
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -125,9 +83,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
 
-            double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            //double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-            double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            //double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
 
@@ -143,15 +101,40 @@ public class BasicOpMode_Linear extends LinearOpMode {
 //                robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //            }
 
-        if (gamepad1.a)
-        {
-            robot.leftServo.setPosition(1);
-            robot.rightServo.setPosition(-1);
-        }
-        if (gamepad1.b) {
-            robot.leftServo.setPosition(-1);
-            robot.rightServo.setPosition(1);
-        }
+            if (gamepad1.x)
+            {
+                robot.leftServo.setPosition(1);
+                robot.rightServo.setPosition(-1);
+            }
+            if (gamepad1.y) {
+                robot.leftServo.setPosition(-1);
+                robot.rightServo.setPosition(1);
+            }
+
+            if (gamepad1.a){
+                robot.clawServo.setPosition(1);
+            }
+
+            if (gamepad1.b){
+                robot.clawServo.setPosition(-1);
+            }
+
+            if (gamepad1.right_bumper){
+                robot.liftServo.setPosition(1);
+            }
+
+            if (gamepad1.left_bumper){
+                robot.liftServo.setPosition(-1);
+            }
+
+            if (gamepad1.dpad_up){
+                liftPower = 1;
+            }
+            else
+                liftPower = 0;
+            if (gamepad1.dpad_down) {
+                liftPower = -1;
+            }
 //
 //            if (gamepad2.dpad_up)
 //            {
@@ -182,15 +165,16 @@ public class BasicOpMode_Linear extends LinearOpMode {
             robot.rightBackDrive.setPower(speedRB);
 //            robot.cascadingMotor.setPower(cascadingPower);
 //            robot.angleMotor.setPower(anglePower);
+            robot.liftMotor.setPower(liftPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLF, speedLB, speedRF, speedRB);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLB, speedRB);
 //            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
 //                    robot.leftFrontDrive.getCurrentPosition(),
 //                    robot.rightFrontDrive.getCurrentPosition());
             telemetry.update();
         }
-        }
     }
+}
 

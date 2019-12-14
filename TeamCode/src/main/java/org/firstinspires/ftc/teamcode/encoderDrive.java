@@ -31,7 +31,7 @@ public class encoderDrive extends LinearOpMode {
 
     public void runOpMode() {
 
-        robot.init(hardwareMap, this);
+        robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");

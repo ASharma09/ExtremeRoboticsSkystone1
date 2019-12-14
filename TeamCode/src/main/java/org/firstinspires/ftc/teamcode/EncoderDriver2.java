@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
-/*
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+/*
 @Autonomous(name = "drive2", group = "ExtremeBot")
 
 public class EncoderDriver2 extends LinearOpMode {
@@ -20,7 +20,7 @@ public class EncoderDriver2 extends LinearOpMode {
     static final double TURN_SPEED = 0.5;
 
     public void runOpMode() {
-        robot.init(hardwareMap, this);
+        robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -281,6 +281,6 @@ public class EncoderDriver2 extends LinearOpMode {
 
     }
 }
+*/
 
- */
 

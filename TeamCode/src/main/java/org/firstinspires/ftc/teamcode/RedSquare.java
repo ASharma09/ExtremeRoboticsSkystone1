@@ -5,9 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.Random;
 
-/**
- * Created by femukund on 11/5/2017.
- */
+
+
 
 @Autonomous(name="RedSquare")
 public class RedSquare extends encoderDrive {

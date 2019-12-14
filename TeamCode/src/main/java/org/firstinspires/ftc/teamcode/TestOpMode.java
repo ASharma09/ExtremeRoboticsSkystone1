@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
- * Created by femukund on 11/5/2017.
- */
+
 
 @Autonomous(name="TestOpMode")
 public class TestOpMode extends encoderDrive {
@@ -28,4 +27,4 @@ public class TestOpMode extends encoderDrive {
 
     }
 }
-
+*/

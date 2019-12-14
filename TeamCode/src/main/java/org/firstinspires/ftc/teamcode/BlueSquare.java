@@ -4,9 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
- * Created by femukund on 11/5/2017.
- */
 
 @Autonomous(name="BlueSquare")
 public class BlueSquare extends encoderDrive {

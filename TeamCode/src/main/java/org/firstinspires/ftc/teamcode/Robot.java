@@ -16,7 +16,7 @@ public class Robot
 {
     // Hardware map & op mode
     HardwareMap hwMap;
-    LinearOpMode opMode;
+//    LinearOpMode opMode;
 //    double drivePower = 0.9;
 //    // Variables for Encoder driving
 //    static final double COUNTS_PER_MOTOR_REV = 1120;    // eg: Andy Mark Motor Encoder
@@ -27,33 +27,37 @@ public class Robot
 
 
     ElapsedTime runtime = new ElapsedTime();
-    DcMotor leftBackDrive;
+    DcMotor leftBackDrive = null;
     DcMotor leftFrontDrive;
-    DcMotor rightBackDrive;
-    DcMotor rightFrontDrive;
-//    DcMotor cascadingMotor;
-//    DcMotor angleMotor;
-    //Servo leftServo;
-    //Servo rightServo;
+    DcMotor rightBackDrive = null;
+    DcMotor rightFrontDrive = null;
+    DcMotor liftMotor = null;
+    Servo leftServo = null;
+    Servo rightServo = null;
+    Servo clawServo = null;
+    Servo liftServo = null;
 
 
 
     double[] paramA = {0, 1, -1};
 
-    public void init(HardwareMap ProtohwMap, LinearOpMode linearOpMode)
+    public void init(HardwareMap ProtohwMap)
     {
         hwMap = ProtohwMap;
-        opMode = linearOpMode;
+        //opMode = linearOpMode;
 
-        // Wheels
         leftBackDrive = hwMap.get(DcMotor.class, "leftBackMotor");
         leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontMotor");
         rightBackDrive = hwMap.get(DcMotor.class, "rightBackMotor");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontMotor");
-//        cascadingMotor = hwMap.get(DcMotor.class, "cascadingMotor");
-//        angleMotor = hwMap.get(DcMotor.class, "angleMotor");
-        //leftServo = hwMap.get(Servo.class, "leftServo");
-        //rightServo = hwMap.get(Servo.class, "rightServo");
+        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+
+        //when plugging in servos, black goes left if you're looking at it rightside up
+        rightServo = hwMap.get(Servo.class, "rightServo");
+        leftServo = hwMap.get(Servo.class, "leftServo");
+        clawServo = hwMap.get(Servo.class, "clawServo");
+        liftServo = hwMap.get(Servo.class, "liftServo");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -61,21 +65,7 @@ public class Robot
         leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//        cascadingMotor.setDirection(DcMotor.Direction.FORWARD);
-//        angleMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        // Arm
-      /*  actuatorMotor = hwMap.dcMotor.get("actuatorMotor");
-        omniMotor = hwMap.dcMotor.get("omniMotor");
-        cascadingMotor = hwMap.dcMotor.get("cascadingMotor");
-        bootMotor = hwMap.dcMotor.get("bootMotor");
-        sideServo = hwMap.servo.get("sideServo");
-        sweepServo = hwMap.servo.get("sweepServo");
-        lockBackServo = hwMap.servo.get("lockBackServo");
-        lockFrontServo = hwMap.servo.get("lockFrontServo");
-        */
-        // Lift
-        //liftMotor = hwMap.dcMotor.get("liftMotor");
     }
 
     public void WaitMillis(long millis)

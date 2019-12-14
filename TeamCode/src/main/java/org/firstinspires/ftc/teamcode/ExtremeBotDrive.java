@@ -12,22 +12,11 @@ import com.qualcomm.robotcore.util.Range;
 /**
  * Created by femukund on 10/29/2017.
  */
-/*
+
 @TeleOp
 public class ExtremeBotDrive extends LinearOpMode {
     Robot robot = new Robot();
 
-    double leftMotorTgtPower = 0;
-    double rightMotorTgtPower = 0;
-    // plz work PLZZZ
-    // Arm
-    double liftBackMotorTgtPower = .1;
-    double frontArmServo = 0.0;
-    double backArmServo = 0.0;
-    double stopServo = 0.0;
-    double positionSS = 0.0;
-    double testRightServo = 0.0;
-    double testLeftServo = 0.0;
     //GoldAlignDetector goldDetector;
     //SamplingOrderDetector detector;
 
@@ -39,8 +28,8 @@ public class ExtremeBotDrive extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        robot.init(hardwareMap, this);
         telemetry.update();
 
 
@@ -51,16 +40,12 @@ public class ExtremeBotDrive extends LinearOpMode {
         while (opModeIsActive())
         //while (opModeIsActive() && (runtime.seconds() < 31.0))
         {
-            drive();
+            testWheelServo();
+            driveWithTwoJoysticks();
+
         }
     }
 
-    // drive
-    public void drive() {
-        driveWithTwoJoysticks();
-        //testWheelServo();
-        telemetry.update();
-    }
 
     // drive with joysticks
     public void driveWithTwoJoysticks() {
@@ -68,16 +53,16 @@ public class ExtremeBotDrive extends LinearOpMode {
         // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
         // In this mode the Left stick moves the robot fwd and back and crabs left and right,
         // the Right stick tank turns left and right
-        double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+        //double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
         double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-        double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+        //double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
         double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
 
         // Clip values so that they are within -1 & +1
-        speedLF = Range.clip(speedLF, -1, 1);
+        //speedLF = Range.clip(speedLF, -1, 1);
         speedLB = Range.clip(speedLB, -1, 1);
-        speedRF = Range.clip(speedRF, -1, 1);
+        //speedRF = Range.clip(speedRF, -1, 1);
         speedRB = Range.clip(speedRB, -1, 1);
 
         // Set speed to motors
@@ -86,22 +71,21 @@ public class ExtremeBotDrive extends LinearOpMode {
         //leftback = 2
         //rightback = 3
 //        robot.leftFrontMotor.setPower(p[0] * speedLF);
-//        robot.leftBackMotor.setPower(p[2] * speedLB);
+        robot.leftBackDrive.setPower(speedLB);
 //        robot.rightFrontMotor.setPower(p[1] * speedRF);
-//        robot.rightBackMotor.setPower(p[3] * speedRB);
+        robot.rightBackDrive.setPower(speedRB);
     }
 
-//    public void testWheelServo () {
-//        if (gamepad1.a)
-//        {
-//            robot.testLeftServo.setPosition(1);
-//            robot.testRightServo.setPosition(-1);
-//        }
-//        if (gamepad1.b)
-//        {
-//            robot.testLeftServo.setPosition(-1);
-//            robot.testRightServo.setPosition(1);
-//        }
-//    }
+    public void testWheelServo () {
+        if (gamepad1.a)
+        {
+            robot.leftServo.setPosition(1);
+            robot.rightServo.setPosition(-1);
+        }
+        if (gamepad1.b)
+        {
+            robot.leftServo.setPosition(-1);
+            robot.rightServo.setPosition(1);
+        }
+    }
 }
-*/
