@@ -143,15 +143,15 @@ public class BasicOpMode_Linear extends LinearOpMode {
 //                robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //            }
 
-        if (gamepad1.a)
-        {
-            robot.leftServo.setPosition(1);
-            robot.rightServo.setPosition(-1);
-        }
-        if (gamepad1.b) {
-            robot.leftServo.setPosition(-1);
-            robot.rightServo.setPosition(1);
-        }
+//        if (gamepad1.a)
+//        {
+//            robot.leftServo.setPosition(1);
+//            robot.rightServo.setPosition(-1);
+//        }
+//        if (gamepad1.b) {
+//            robot.leftServo.setPosition(-1);
+//            robot.rightServo.setPosition(1);
+//        }
 //
 //            if (gamepad2.dpad_up)
 //            {
@@ -176,9 +176,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
 //                anglePower = -1;
 //            }
 
-            //robot.leftFrontDrive.setPower(speedLF);
+            robot.leftFrontDrive.setPower(speedLF);
             robot.leftBackDrive.setPower(speedLB);
-            //robot.rightFrontDrive.setPower(speedRF);
+            robot.rightFrontDrive.setPower(speedRF);
             robot.rightBackDrive.setPower(speedRB);
 //            robot.cascadingMotor.setPower(cascadingPower);
 //            robot.angleMotor.setPower(anglePower);
@@ -186,9 +186,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLF, speedLB, speedRF, speedRB);
-//            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
-//                    robot.leftFrontDrive.getCurrentPosition(),
-//                    robot.rightFrontDrive.getCurrentPosition());
+            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
+                    robot.leftFrontDrive.getCurrentPosition(),
+                    robot.rightFrontDrive.getCurrentPosition());
             telemetry.update();
         }
         }

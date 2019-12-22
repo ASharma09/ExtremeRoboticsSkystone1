@@ -40,7 +40,7 @@ public class ExtremeBotDrive extends LinearOpMode {
         while (opModeIsActive())
         //while (opModeIsActive() && (runtime.seconds() < 31.0))
         {
-            testWheelServo();
+            //testWheelServo();
             driveWithTwoJoysticks();
 
         }
@@ -76,16 +76,16 @@ public class ExtremeBotDrive extends LinearOpMode {
         robot.rightBackDrive.setPower(speedRB);
     }
 
-    public void testWheelServo () {
-        if (gamepad1.a)
-        {
-            robot.leftServo.setPosition(1);
-            robot.rightServo.setPosition(-1);
-        }
-        if (gamepad1.b)
-        {
-            robot.leftServo.setPosition(-1);
-            robot.rightServo.setPosition(1);
-        }
+//    public void testWheelServo () {
+//        if (gamepad1.a)
+//        {
+//            robot.leftServo.setPosition(1);
+//            robot.rightServo.setPosition(-1);
+//        }
+//        if (gamepad1.b)
+//        {
+//            robot.leftServo.setPosition(-1);
+//            robot.rightServo.setPosition(1);
+//        }
     }
-}
+

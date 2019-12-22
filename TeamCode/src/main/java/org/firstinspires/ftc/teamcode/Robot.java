@@ -28,14 +28,14 @@ public class Robot
 
     ElapsedTime runtime = new ElapsedTime();
     DcMotor leftBackDrive = null;
-    DcMotor leftFrontDrive;
+    DcMotor leftFrontDrive = null;
     DcMotor rightBackDrive = null;
     DcMotor rightFrontDrive = null;
-    DcMotor liftMotor = null;
-    Servo leftServo = null;
-    Servo rightServo = null;
-    Servo clawServo = null;
-    Servo liftServo = null;
+//    DcMotor liftMotor = null;
+//    Servo leftServo = null;
+//    Servo rightServo = null;
+//    Servo clawServo = null;
+//    Servo liftServo = null;
 
 
 
@@ -50,13 +50,13 @@ public class Robot
         leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontMotor");
         rightBackDrive = hwMap.get(DcMotor.class, "rightBackMotor");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontMotor");
-        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
+//        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
 
         //when plugging in servos, black goes left if you're looking at it rightside up
-        rightServo = hwMap.get(Servo.class, "rightServo");
-        leftServo = hwMap.get(Servo.class, "leftServo");
-        clawServo = hwMap.get(Servo.class, "clawServo");
-        liftServo = hwMap.get(Servo.class, "liftServo");
+//        rightServo = hwMap.get(Servo.class, "rightServo");
+//        leftServo = hwMap.get(Servo.class, "leftServo");
+//        clawServo = hwMap.get(Servo.class, "clawServo");
+//        liftServo = hwMap.get(Servo.class, "liftServo");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
