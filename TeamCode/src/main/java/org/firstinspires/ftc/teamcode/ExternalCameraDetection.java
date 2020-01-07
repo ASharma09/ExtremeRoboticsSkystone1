@@ -27,6 +27,9 @@ public class ExternalCameraDetection extends LinearOpMode {
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
 
+    public String[] position = new String[3];
+    public int skystonePlace;
+
     private static final String VUFORIA_KEY =
             "AWgpcWb/////AAABmaGz2/7eLkNnmdf7SE2FZHVj9lqZbwrKkg/8If3+fcqfKrCTI8mB7LVi91U36rl9kbu" +
                     "9YQN4E885gcuB1EuzBZM+aDWlSel0plj5FnPPsz4+S4Z9jfMgPyCtF7yOJ93ijYIT/LWznGg34Q" +
@@ -48,6 +51,10 @@ public class ExternalCameraDetection extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        runVuforia();
+    }
+
+    public int runVuforia() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
@@ -87,8 +94,42 @@ public class ExternalCameraDetection extends LinearOpMode {
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
+                            //MAYBE
+                            //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
+                            i++;
+
+                            if (recognition.getLeft() < 30 && recognition.getRight() < 450) {
+                                position[1] = recognition.getLabel();
+                            }
+                            if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
+                                position[2] = recognition.getLabel();
+                            }
+
                         }
+                        if (position[1] == "Stone" && position[2] == "Stone") {
+                            position[0] = "Skystone";
+                        }
+                        else {
+                            position[0] = "Stone";
+                        }
+
+                        telemetry.addData("block 1 is --", position[0]);
+                        telemetry.addData("block 2 is --", position[1]);
+                        telemetry.addData("block 3 is --", position[2]);
+
                         telemetry.update();
+
+
+                        if (position[0] == "Skystone"); {
+                            skystonePlace = 1;
+                        }
+                        if (position[1] == "Skystone") {
+                            skystonePlace = 2;
+                        }
+                        if (position[2] == "Skystone") {
+                            skystonePlace = 3;
+                        }
+
                     }
                 }
             }
@@ -97,6 +138,12 @@ public class ExternalCameraDetection extends LinearOpMode {
         if (tfod != null) {
             tfod.shutdown();
         }
+
+        return skystonePlace;
+    }
+
+    public int getSkystonePlace() {
+        return skystonePlace;
     }
 
     /**

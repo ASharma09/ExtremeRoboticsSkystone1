@@ -51,11 +51,12 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-/*
+
 @TeleOp(name="ScrimmageTeleOp", group="Linear Opmode")
 
 public class ScrimmageTeleOp extends LinearOpMode {
     Robot robot = new Robot();
+    double coeff = 0.5;
 
     @Override
     public void runOpMode() {
@@ -72,77 +73,76 @@ public class ScrimmageTeleOp extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            double cascadingPower;
-            double anglePower;
-            double liftPower;
-
-
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
 
-            //double speedLF = -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-            double speedLB = -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-            //double speedRF = -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-            double speedRB = -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            double speedLF = coeff * (-(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x));
+            double speedLB = coeff * (-(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x));
+            double speedRF = coeff * (-(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x));
+            double speedRB = coeff * (-(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x));
 
 
-//            if (gamepad1.a) {
-//                robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//                robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (gamepad1.a) {
+                robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+//            if (gamepad1.x)
+//            {
+//                robot.leftServo.setPosition(1);
+//                robot.rightServo.setPosition(-1);
 //            }
-
-            if (gamepad1.x)
-            {
-                robot.leftServo.setPosition(1);
-                robot.rightServo.setPosition(-1);
-            }
-            if (gamepad1.y) {
-                robot.leftServo.setPosition(-1);
-                robot.rightServo.setPosition(1);
-            }
-
-            if (gamepad1.a){
-                robot.clawServo.setPosition(1);
+//            if (gamepad1.y) {
+//                robot.leftServo.setPosition(-1);
+//                robot.rightServo.setPosition(1);
+//            }
+//
+            if (gamepad1.x){
+                robot.FMRight.setPosition(1);
+                robot.FMLeft.setPosition(-1);
             }
 
-            if (gamepad1.b){
-                robot.clawServo.setPosition(-1);
+            if (gamepad1.y){
+                robot.FMRight.setPosition(-1);
+                robot.FMLeft.setPosition(1);
             }
 
             if (gamepad1.right_bumper){
-                robot.liftServo.setPosition(1);
+                robot.chickenServo.setPosition(1);
             }
 
             if (gamepad1.left_bumper){
-                robot.liftServo.setPosition(-1);
+                robot.chickenServo.setPosition(-1);
             }
 
-            if (gamepad1.dpad_up){
-                liftPower = 1;
-            }
-            else
-                liftPower = 0;
-            if (gamepad1.dpad_down) {
-                liftPower = -1;
-            }
+
+
+//            if (gamepad1.dpad_up){
+//                liftPower = 1;
+//            }
+//            else
+//                liftPower = 0;
+//            if (gamepad1.dpad_down) {
+//                liftPower = -1;
+//            }
 //
 //            if (gamepad2.dpad_up)
 //            {
 //                robot.leftServo.setPosition(1);
-//
 //            }
 //            else
 //                cascadingPower = 0;
+
 //            if (gamepad2.dpad_down)
 //            {
 //                cascadingPower = -1;
@@ -159,23 +159,25 @@ public class ScrimmageTeleOp extends LinearOpMode {
 //                anglePower = -1;
 //            }
 
-            //robot.leftFrontDrive.setPower(speedLF);
+            robot.leftFrontDrive.setPower(speedLF);
             robot.leftBackDrive.setPower(speedLB);
-            //robot.rightFrontDrive.setPower(speedRF);
+            robot.rightFrontDrive.setPower(speedRF);
             robot.rightBackDrive.setPower(speedRB);
 //            robot.cascadingMotor.setPower(cascadingPower);
 //            robot.angleMotor.setPower(anglePower);
-            robot.liftMotor.setPower(liftPower);
+            //robot.liftMotor.setPower(liftPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLB, speedRB);
-//            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
-//                    robot.leftFrontDrive.getCurrentPosition(),
-//                    robot.rightFrontDrive.getCurrentPosition());
+            telemetry.addData("LFP, RFP", "Running at %7d :%7d",
+                    robot.leftFrontDrive.getCurrentPosition(),
+                    robot.rightFrontDrive.getCurrentPosition());
+            telemetry.addData("LBP, RBP", "Running at %7d :%7d",
+                    robot.leftBackDrive.getCurrentPosition(),
+                    robot.rightBackDrive.getCurrentPosition());
             telemetry.update();
         }
     }
 }
 
-*/

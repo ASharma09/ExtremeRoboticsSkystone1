@@ -36,6 +36,9 @@ public class Robot
 //    Servo rightServo = null;
 //    Servo clawServo = null;
 //    Servo liftServo = null;
+    Servo chickenServo = null;
+    Servo FMRight = null;
+    Servo FMLeft = null;
 
 
 
@@ -57,6 +60,10 @@ public class Robot
 //        leftServo = hwMap.get(Servo.class, "leftServo");
 //        clawServo = hwMap.get(Servo.class, "clawServo");
 //        liftServo = hwMap.get(Servo.class, "liftServo");
+        chickenServo = hwMap.get(Servo.class, "chickenServo");
+        FMRight = hwMap.get(Servo.class, "FMRight");
+        FMLeft = hwMap.get(Servo.class, "FMLeft");
+
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -78,5 +85,7 @@ public class Robot
             Thread.currentThread().interrupt();
         }
     }
+
+    //ADD LATCH FOUNDATION METHOD HERE
 
 }

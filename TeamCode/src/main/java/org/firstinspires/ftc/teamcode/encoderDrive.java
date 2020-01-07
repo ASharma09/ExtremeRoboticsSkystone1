@@ -53,6 +53,22 @@ public class encoderDrive extends LinearOpMode {
         telemetry.update();
     }
 
+
+    public void moveChicken(int position) {
+        robot.chickenServo.setPosition(position);
+    }
+
+    public void moveFoundation(int direction) {
+        if (direction == 1) {
+            robot.FMRight.setPosition(1);
+            robot.FMLeft.setPosition(-1);
+        }
+        if (direction == -1) {
+            robot.FMRight.setPosition(-1);
+            robot.FMLeft.setPosition(1);
+        }
+    }
+
     public void encoderBack(double speed, int ticks) {
 
         stopAndResetEncoder();
@@ -257,7 +273,7 @@ public class encoderDrive extends LinearOpMode {
             leftB = robot.leftBackDrive.getCurrentPosition() + ticks;
             rightB = robot.rightBackDrive.getCurrentPosition() + ticks;
 
-            //if intent is to drive left
+            //if intent is to drive right
             if (direction == -1) {
                 //set target position for front wheels
                 robot.leftFrontDrive.setTargetPosition(-leftF);
@@ -268,7 +284,7 @@ public class encoderDrive extends LinearOpMode {
                 robot.rightBackDrive.setTargetPosition(-rightB);
             }
 
-            //if intent is to drive right
+            //if intent is to drive left
             else if (direction == 1) {
                 //set target position for front wheels
                 robot.leftFrontDrive.setTargetPosition(leftF);
