@@ -78,11 +78,10 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-
-            double speedLF = coeff * (-(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x));
-            double speedLB = coeff * (-(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x));
-            double speedRF = coeff * (-(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x));
-            double speedRB = coeff * (-(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x));
+            double speedLF = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            double speedLB = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+            double speedRF = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            double speedRB = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
 
             if (gamepad1.a) {
@@ -119,10 +118,12 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             if (gamepad1.right_bumper){
                 robot.chickenServo.setPosition(1);
+                //position 1 is down
             }
 
             if (gamepad1.left_bumper){
                 robot.chickenServo.setPosition(-1);
+                //position -1 is up
             }
 
 

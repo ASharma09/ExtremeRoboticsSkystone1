@@ -56,6 +56,7 @@ public class encoderDrive extends LinearOpMode {
 
     public void moveChicken(int position) {
         robot.chickenServo.setPosition(position);
+        sleep(500);
     }
 
     public void moveFoundation(int direction) {

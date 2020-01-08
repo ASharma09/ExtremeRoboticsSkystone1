@@ -13,23 +13,24 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import java.util.List;
 import java.util.Random;
 
-
-
-
 @Autonomous(name="RedSquare")
 public class RedSquare extends encoderDrive {
     //Robot robot = new Robot();
 
-    ExternalCameraDetection ECD = new ExternalCameraDetection();
+    //Creating an instance of the class doesn't work because it doesn't actually use vuforia
+    //ExternalCameraDetection ECD = new ExternalCameraDetection();
 
+
+    //skystonePosition is for the movement part of the autonomous
     int skystonePosition;
     //BasicOpMode_Linear basic = new BasicOpMode_Linear();
-/*
+
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
 
     public String[] position = new String[3];
+    //skystonePlace is for the runVuforia() method to return
     int skystonePlace;
 
     private static final String VUFORIA_KEY =
@@ -38,7 +39,7 @@ public class RedSquare extends encoderDrive {
                     "ljTOfBIsABnXFd/2iZKuTD2XMewqk+Fw+vJLEZK4SR18I4Cs/L4HXUK9BO/3KwQPTQc5nRisUJVV" +
                     "sxv4wcNFGaECpBrUdg5icwVdMfuPbPjDwtIpX7wuDLdLFXZkveohubFUlcnPGFGrj7QFald5V92+" +
                     "1C8fmKfcmv/LfuHVWJQ/4bgSkE1NcN+G/bmlnV1Wv8clJ3JzV/w3FK2+1GX6vXsD44rtHt";
-/*
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -54,18 +55,19 @@ public class RedSquare extends encoderDrive {
     @Override
     public void runOpMode() {
         super.runOpMode();
-        //ECD.runVuforia();
-//        skystonePosition = ETC.getSkystonePlace();
-//        telemetry.addData("skystone position", skystonePosition);
-        //basic.init(hardwareMap, this);
-//        private ElapsedTime runtime = new ElapsedTime();
-//        private DcMotor leftBackDrive = null;
-//        private DcMotor leftFrontDrive = null;
-//        private DcMotor rightBackDrive = null;
-//        private DcMotor rightFrontDrive = null;
 
         //runVuforia();
         //telemetry.addData("Skystone position", getSkystone());
+
+        //Krishna also added this but its in the initVuforia() method
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//
+//        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+//        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        //  Instantiate the Vuforia engine
+        //Krishna added this but I have it in the runVuforia() method which calls initVuforia()
+        //vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -77,53 +79,85 @@ public class RedSquare extends encoderDrive {
         waitForStart();
         //turn 90 degrees is 2519
 
-        //MOVE FORWARD TO CAMERA POSITION FIRST
-        //encoderStrafe (0.5, 1, 850);
-        //encoderStrafe (0.5, 1, 1500);
 
-        //skystonePosition = runVuforia();
-        //ECD.runVuforia();
-        skystonePosition = ECD.runVuforia();
+
+        /*
+        //Added by Krishna
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minimumConfidence = 0.8;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);;
+        //skystonePosition = tfod.
+        */
 //        telemetry.addData("position of skystone", skystonePosition);
 
-        skystonePosition = 3;
+        encoderStrafe(0.5, 1, 830);
 
-        encoderStrafe(0.5, 1, 512);
+        //if (getRuntime() < 6000) {
+            //skystonePosition = runVuforia();
+        //}
+        skystonePosition = 2;
 
         //MOVE TO ALIGN WITH SKYSTONE POSITION
         if (skystonePosition == 1) {
+            encoderStrafe(0.5, 1, 520);
+            //encoderBack(0.2, 350);
+            moveChicken(1);
+            encoderStrafe(0.5, -1, 400);
+            encoderForward(0.5, 2300);
+            moveChicken(-1);
+            encoderStrafe(0.5, -1, 50);
+            encoderBack(0.5, 3400);
+            encoderStrafe(0.5, 1, 250);
+            moveChicken(1);
+            encoderStrafe(0.5, -1, 600);
+            encoderForward(0.5, 3200);
+            moveChicken(-1);
+            encoderForward(0.5, 1300);
+
         }
         if (skystonePosition == 2) {
             //move a bit less to the right than position 1
+            encoderStrafe(0.5, 1, 520);
+            encoderForward(0.2, 50);
+            moveChicken(1);
+            encoderStrafe(0.5, -1, 300);
+            encoderForward(0.5, 1900);
+            moveChicken(-1);
+            encoderStrafe(0.5, -1, 50);
+            encoderBack(0.5, 3300);
+            encoderForward(0.3, 344);
+            encoderStrafe(0.5, 1, 680);
+            moveChicken(1);
+            encoderStrafe(0.5, -1, 580);
+            encoderForward(0.7, 2400);
+            moveChicken(-1);
+            encoderForward(0.7, 2000);
+
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
-
-            encoderForward(0.1, 470);
-            sleep(5000);
-            encoderStrafe(0.1, -1, 360);
-            encoderForward(0.2, 1250);
+            encoderStrafe(0.5, 1, 520);
+            encoderForward(0.2, 400);
+            moveChicken(1);
+            //bring chicken down
+            encoderStrafe(0.5, -1, 400);
+            encoderForward(0.5, 1400);
             //release chicken wing
-            sleep(5000);
-            encoderBack(0.2, 2320);
-            encoderStrafe(0.1, 1, 360);
-            sleep(5000);
+            moveChicken(-1);
+            encoderBack(0.5, 2470);
+            encoderStrafe(0.5, 1, 400);
+            moveChicken(1);
             //bring down chicken wing
-            encoderStrafe(0.1, -1, 550);
-            encoderForward(0.2, 2700);
+            encoderStrafe(0.5, -1, 620);
+            encoderForward(0.5, 2700);
+            moveChicken(-1);
+            encoderStrafe(0.1, -1, 30);
         }
 
-
-        //release chicken wing
-
-
-
-        //pickup furthest block or skystone
-        moveChicken(1);
-
-
     }
-/*
+
 
     public int runVuforia() {
         initVuforia();
@@ -138,9 +172,9 @@ public class RedSquare extends encoderDrive {
             tfod.activate();
         }
 
-        telemetry.addData(">", "Press Play to start op mode");
-        telemetry.update();
-        waitForStart();
+//        telemetry.addData(">", "Press Play to start op mode");
+//        telemetry.update();
+        //waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -148,52 +182,57 @@ public class RedSquare extends encoderDrive {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
+                    if (updatedRecognitions != null /*|| getRuntime() > 7*/) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
                         // step through the list of recognitions and display boundary info.
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                            //MAYBE
-                            //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
-                            i++;
+                            //if (getRuntime() > 7)
+                            {
+                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                        recognition.getLeft(), recognition.getTop());
+                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                        recognition.getRight(), recognition.getBottom());
+                                //MAYBE
+                                //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
+                                i++;
 
-                            if (recognition.getLeft() < 30 && recognition.getRight() < 450) {
-                                position[1] = recognition.getLabel();
+                                if (recognition.getLeft() < 60 && recognition.getRight() < 500) {
+                                    position[2] = recognition.getLabel();
+                                }
+                                if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
+                                    position[1] = recognition.getLabel();
+                                }
                             }
-                            if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
-                                position[2] = recognition.getLabel();
-                            }
-
                         }
-                        if (position[1] == "Stone" && position[2] == "Stone") {
-                            position[0] = "Skystone";
-                        } else {
-                            position[0] = "Stone";
-                        }
+//
+//                        if (position[1] == "Stone" && position[2] == "Stone") {
+//                            position[0] = "Skystone";
+//                        }
+//                        if (position[1] != "Stone" || position[2] != "Stone"){
+//                            position[0] = "Stone";
+//                        }
 
-                        telemetry.addData("block 1 is --", position[0]);
+                        //telemetry.addData("block 1 is --", position[0]);
                         telemetry.addData("block 2 is --", position[1]);
                         telemetry.addData("block 3 is --", position[2]);
 
                         telemetry.update();
 
-
-                        if (position[0] == "Skystone") ;
-                        {
-                            skystonePlace = 1;
-                        }
+//                        if (position[0] == "Skystone") ;
+//                        {
+//                            skystonePlace = 1;
+//                        }
                         if (position[1] == "Skystone") {
                             skystonePlace = 2;
                         }
                         if (position[2] == "Skystone") {
                             skystonePlace = 3;
                         }
-
+                        if (position[1] != "Skystone" && position[2] != "Skystone") {
+                            skystonePlace = 1;
+                        }
                     }
                 }
             }
@@ -202,6 +241,8 @@ public class RedSquare extends encoderDrive {
         if (tfod != null) {
             tfod.shutdown();
         }
+        telemetry.addData("I made it!", "skystonePlace");
+        telemetry.update();
         return skystonePlace;
     }
 
@@ -217,6 +258,8 @@ public class RedSquare extends encoderDrive {
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         //  Instantiate the Vuforia engine
+        //this is apparently what I was having a problem with. By making a object of the ECD class
+        //I wasn't getting the vuforia engine instantiated
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
         // Loading trackables is not necessary for the TensorFlow Object Detection engine.
@@ -231,7 +274,7 @@ public class RedSquare extends encoderDrive {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
- */
+
 }
 
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import java.lang.System.*;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -84,52 +85,55 @@ public class ExternalCameraDetection extends LinearOpMode {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        // step through the list of recognitions and display boundary info.
-                        int i = 0;
-                        for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                            //MAYBE
-                            //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
-                            i++;
+                    if (updatedRecognitions != null || getRuntime() > 7) {
+                        if (getRuntime() > 7) {
+                            telemetry.addData("# Object Detected", updatedRecognitions.size());
+                            // step through the list of recognitions and display boundary info.
+                            int i = 0;
+                            for (Recognition recognition : updatedRecognitions) {
+                                telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                        recognition.getLeft(), recognition.getTop());
+                                telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                        recognition.getRight(), recognition.getBottom());
+                                //MAYBE
+                                //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
+                                i++;
 
-                            if (recognition.getLeft() < 30 && recognition.getRight() < 450) {
-                                position[1] = recognition.getLabel();
+                                if (recognition.getLeft() < 30 && recognition.getRight() < 450) {
+                                    position[1] = recognition.getLabel();
+                                }
+                                if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
+                                    position[2] = recognition.getLabel();
+                                }
+
                             }
-                            if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
-                                position[2] = recognition.getLabel();
+                            if (position[1] == "Stone" && position[2] == "Stone") {
+                                position[0] = "Skystone";
+                            }
+                            if (position[1] != "Stone" || position[2] != "Stone") {
+                                position[0] = "Stone";
+                            }
+
+                            telemetry.addData("block 1 is --", position[0]);
+                            telemetry.addData("block 2 is --", position[1]);
+                            telemetry.addData("block 3 is --", position[2]);
+
+                            telemetry.update();
+
+
+                            if (position[0] == "Skystone") ;
+                            {
+                                skystonePlace = 1;
+                            }
+                            if (position[1] == "Skystone") {
+                                skystonePlace = 2;
+                            }
+                            if (position[2] == "Skystone") {
+                                skystonePlace = 3;
                             }
 
                         }
-                        if (position[1] == "Stone" && position[2] == "Stone") {
-                            position[0] = "Skystone";
-                        }
-                        else {
-                            position[0] = "Stone";
-                        }
-
-                        telemetry.addData("block 1 is --", position[0]);
-                        telemetry.addData("block 2 is --", position[1]);
-                        telemetry.addData("block 3 is --", position[2]);
-
-                        telemetry.update();
-
-
-                        if (position[0] == "Skystone"); {
-                            skystonePlace = 1;
-                        }
-                        if (position[1] == "Skystone") {
-                            skystonePlace = 2;
-                        }
-                        if (position[2] == "Skystone") {
-                            skystonePlace = 3;
-                        }
-
                     }
                 }
             }
@@ -157,6 +161,9 @@ public class ExternalCameraDetection extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        //System.out.println(WebcamName.class.toString());
+        telemetry.addData("webcam name", WebcamName.class.toString());
+        telemetry.update();
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
