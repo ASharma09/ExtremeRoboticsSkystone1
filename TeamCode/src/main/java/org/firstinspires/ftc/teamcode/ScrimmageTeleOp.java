@@ -56,13 +56,19 @@ import com.qualcomm.robotcore.util.Range;
 
 public class ScrimmageTeleOp extends LinearOpMode {
     Robot robot = new Robot();
-    double coeff = 0.5;
+
+    double coeff = 0.7;
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        double speedLF;
+        double speedRF;
+        double speedLB;
+        double speedRB;
 
         //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
@@ -78,10 +84,24 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double speedLF = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-            double speedLB = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-            double speedRF = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-            double speedRB = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedLF = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedLB = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedRF = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedRB = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+
+            if (gamepad1.left_bumper) {
+                speedLF = 0.2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = 0.2 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = 0.2 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = 0.2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            }
+
+            if (gamepad1.right_bumper) {
+                speedLF = 1 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = 1 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = 1 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = 1 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            }
 
 
             if (gamepad1.a) {
@@ -105,23 +125,23 @@ public class ScrimmageTeleOp extends LinearOpMode {
 //                robot.leftServo.setPosition(-1);
 //                robot.rightServo.setPosition(1);
 //            }
-//
-            if (gamepad1.x){
-                robot.FMRight.setPosition(1);
+
+            if (gamepad2.x){
+                robot.FMRight.setPosition(10);
                 robot.FMLeft.setPosition(-1);
             }
 
-            if (gamepad1.y){
+            if (gamepad2.y){
                 robot.FMRight.setPosition(-1);
                 robot.FMLeft.setPosition(1);
             }
 
-            if (gamepad1.right_bumper){
+            if (gamepad2.dpad_down){
                 robot.chickenServo.setPosition(1);
                 //position 1 is down
             }
 
-            if (gamepad1.left_bumper){
+            if (gamepad2.dpad_up){
                 robot.chickenServo.setPosition(-1);
                 //position -1 is up
             }
