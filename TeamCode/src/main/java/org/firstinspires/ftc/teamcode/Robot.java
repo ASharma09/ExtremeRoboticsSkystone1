@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 //package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -40,6 +41,8 @@ public class Robot
     Servo FMRight = null;
     Servo FMLeft = null;
 
+    //BNO055IMU gyro    = null;
+
 
 
     double[] paramA = {0, 1, -1};
@@ -63,6 +66,8 @@ public class Robot
         chickenServo = hwMap.get(Servo.class, "chickenServo");
         FMRight = hwMap.get(Servo.class, "FMRight");
         FMLeft = hwMap.get(Servo.class, "FMLeft");
+
+        //gyro = (BNO055IMU) hwMap.gyroSensor.get("gyro");
 
 
 

@@ -20,19 +20,25 @@ public class RedTriangle extends encoderDrive {
         telemetry.addData("Say", "All systems go!");
         //GO!!!
 
-        final double speed = 0.8;
+        final double speed = 0.5;
+
+        moveChicken(-1);
+        moveFoundation(1);
 
         waitForStart();
 
-        encoderForward(speed, 2494);
-        encoderStrafe(speed, -1, 7905); //skystone position 2
-        encoderForward(speed, 440);
-        encoderBack(speed, 600);
-        encoderStrafe(speed, 1, 9000);
-        encoderForward(speed, 830);
-        //latch onto foundation
-        encoderBack(speed, 3238);
-        encoderStrafe(speed, -1, 5500); //onto blue line
+        encoderStrafe(speed, 1, 400);
+        encoderForward(speed, 1450);
+        moveFoundation(-1);
+        sleep(1000);
+        encoderBack(0.5, 1700);
+        moveFoundation(1);
+        sleep(1000);
+        encoderStrafe(0.5, -1, 2250);
+
+
+
+
     }
 }
 

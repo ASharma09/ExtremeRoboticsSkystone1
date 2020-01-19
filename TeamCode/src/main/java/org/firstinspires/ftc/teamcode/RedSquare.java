@@ -75,116 +75,107 @@ public class RedSquare extends encoderDrive {
         telemetry.addData("Say", "All systems go!");
         //GO!!!
 
-        final double speed = 1;
+        final double speed = 0.3;
 
         moveChicken(-1);
         moveFoundation(1);
 
         waitForStart();
-        //turn 90 degrees is 2519
 
-
-
-        /*
-        //Added by Krishna
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.8;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);;
-        //skystonePosition = tfod.
-        */
-//        telemetry.addData("position of skystone", skystonePosition);
-
-        encoderStrafe(0.3, 1, 830);
+        encoderStrafe(speed, 1, 830);
         skystonePosition = runVuforia();
-        encoderStrafe(0.5, 1, 575);
+        encoderStrafe(speed, 1, 575);
 
         //MOVE TO ALIGN WITH SKYSTONE POSITION
         if (skystonePosition == 1) {
             //encoderBack(0.2, 350);
             encoderBack(0.5, 300);
             moveChicken(1);
-            encoderStrafe(0.5, -1, 400);
-            encoderForward(0.7, 2300);
+            encoderStrafe(speed, -1, 400);
+            encoderForward(0.5, 2300);
             moveChicken(-1);
             //encoderStrafe(0.5, -1, 50);
 
             encoderBack(0.5, 3350);
             encoderForward(0.5, 50);
-            encoderStrafe(0.3, 1, 350);
+            encoderStrafe(speed, 1, 350);
             moveChicken(1);
-            encoderStrafe(0.5, -1, 600);
-            encoderBack(0.5, 200);
-            encoderForward(0.6, 3400);
+            encoderStrafe(speed, -1, 600);
+            encoderBack(speed, 200);
+            encoderForward(0.5, 3400);
             moveChicken(-1);
-            encoderForward(0.6, 1650);
 
-            encoderTurn(0.5, -1, 730, 730);
-            encoderStrafe(0.5, -1, 500);
-            encoderStrafe(0.5, 1, 650);
-            encoderForward(0.5, 450);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.7, 2000);
-            moveFoundation(1);
-            encoderStrafe(0.5, 1, 2150);
+            encoderBack(0.5, 500);
+
+//            encoderForward(0.6, 1650);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderStrafe(0.5, -1, 500);
+//            encoderStrafe(0.5, 1, 650);
+//            encoderForward(0.5, 450);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.7, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(0.5, 1, 2150);
         }
         if (skystonePosition == 2 || skystonePosition == 0) {
             //move a bit less to the right than position 1
-            encoderForward(0.2, 50);
+            encoderBack(0.2, 60);
             moveChicken(1);
-            encoderStrafe(0.5, -1, 400);
+            encoderStrafe(speed, -1, 400);
             encoderForward(0.5, 1900);
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
 
             encoderBack(0.5, 3300);
             encoderForward(0.3, 344);
-            encoderStrafe(0.5, 1, 430);
+            encoderStrafe(speed, 1, 430);
             moveChicken(1);
-            encoderStrafe(0.5, -1, 650);
-            encoderForward(0.7, 2850);
+            encoderStrafe(speed, -1, 650);
+            encoderForward(0.5, 2850);
             moveChicken(-1);
-            encoderForward(0.5, 2300);
 
-            encoderTurn(0.5, -1, 730, 730);
-            encoderStrafe(0.5, -1, 500);
-            encoderStrafe(0.5, 1, 650);
-            encoderForward(0.5, 450);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
-            moveFoundation(1);
-            encoderStrafe(0.5, 1, 2150);
+            encoderBack(0.5, 500);
+
+//            encoderForward(0.5, 2300);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderStrafe(0.5, -1, 500);
+//            encoderStrafe(0.5, 1, 650);
+//            encoderForward(0.5, 450);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(0.5, 1, 2150);
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
-            encoderForward(0.2, 400);
+            encoderForward(0.2, 310);
             moveChicken(1);
-            //bring chicken down
-            encoderStrafe(0.5, -1, 400);
+            encoderStrafe(speed, -1, 400);
             encoderForward(0.5, 1400);
-            //release chicken wing
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
+
             encoderBack(0.5, 2470);
-            encoderStrafe(0.5, 1, 400);
+            encoderStrafe(speed, 1, 400);
             moveChicken(1);
-            //bring down chicken wing
-            encoderStrafe(0.5, -1, 620);
+            encoderStrafe(speed, -1, 620);
             encoderForward(0.5, 2700);
             moveChicken(-1);
-            encoderForward(0.5, 2300);
-            encoderTurn(0.5, -1, 730, 730);
-            encoderStrafe(0.5, -1, 500);
-            encoderStrafe(0.5, 1, 650);
-            encoderForward(0.5, 450);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
-            moveFoundation(1);
-            encoderStrafe(0.5, 1, 2150);
+
+            encoderBack(0.5, 500);
+
+//            encoderForward(0.5, 2300);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderStrafe(0.5, -1, 500);
+//            encoderStrafe(0.5, 1, 650);
+//            encoderForward(0.5, 450);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(0.5, 1, 2150);
         }
 
     }
@@ -209,7 +200,10 @@ public class RedSquare extends encoderDrive {
 
         if (opModeIsActive()) {
             boolean isDoneWithVuforia = false;
-            while (opModeIsActive()&& !isDoneWithVuforia) {
+            int isdone = 0;
+            while (opModeIsActive()
+                    && !isDoneWithVuforia
+            ) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
@@ -230,13 +224,16 @@ public class RedSquare extends encoderDrive {
                                 //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
                                 i++;
 
-                                if (recognition.getLeft() < 60 && recognition.getRight() < 500) {
+                                if (recognition.getLeft() < 150 && recognition.getRight() < 600) {
                                     position[2] = recognition.getLabel();
                                 }
-                                if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
+                                if (recognition.getLeft() > 240 && recognition.getRight() > 630) {
                                     position[1] = recognition.getLabel();
                                 }
-                                isDoneWithVuforia=true;
+                                //isdone++;
+                                //if (isdone==2) {
+                                    isDoneWithVuforia = true;
+                                //}
                             }
                         }
 //

@@ -44,99 +44,114 @@ public class BlueSquare extends encoderDrive {
         telemetry.addData("Status", "Initialized");
         //GO!!!
 
-        final double speed = 0.8;
+        final double speed = 0.5;
 
         moveChicken(-1);
         moveFoundation(1);
 
         waitForStart();
 
-        encoderStrafe(0.3, 1, 830);
+        encoderStrafe(0.2, 1, 830);
         skystonePosition = runVuforia();
-        encoderStrafe(0.3, 1, 570);
+        //encoderStrafe(0.2, 1, 540);
 
         if (skystonePosition == 1) {
             //encoderBack(0.2, 350);
             telemetry.addData("skystone path ", 1);
-            telemetry.update();
+            //telemetry.update();
             encoderForward(0.5, 770);
+
+            encoderStrafe(0.2, 1, 560);
+
             moveChicken(1);
-            encoderStrafe(0.5, -1, 400);
+            encoderStrafe(0.5, -1, 420);
             encoderBack(0.5, 2600);
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
 
-            encoderBack(0.5, 2200);
-            encoderForward(0.5, 600);
-            encoderTurn(0.5, -1, 730, 730);
-            encoderForward(0.5, 700);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
+            encoderForward(speed,  500);
+
+//            encoderBack(0.5, 2200);
+//            encoderForward(speed, 600);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderForward(0.5, 700);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
 
         }
         if (skystonePosition == 2) {
             //move a bit less to the right than position 1
             telemetry.addData("skystone path ", 2);
-            telemetry.update();
+            //telemetry.update();
             encoderForward(0.2, 510);
-            moveChicken(1);
-            encoderStrafe(0.5, -1, 450);
-            encoderBack(0.5, 2200);
-            moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
 
-            encoderForward(0.5, 3200);
+            encoderStrafe(0.2, 1, 560);
+
+            moveChicken(1);
+            encoderStrafe(speed, -1, 470);
+            encoderBack(speed, 2400);
+            moveChicken(-1);
+            encoderStrafe(speed, -1, 50);
+
+            encoderForward(0.4, 3400);
             //encoderForward(0.3, 344);
-            encoderStrafe(0.4, 1, 585);
+            encoderStrafe(speed, 1, 600);
             moveChicken(1);
-            encoderStrafe(0.5, -1, 625);
-            encoderBack(0.7, 3250);
+            encoderStrafe(speed, -1, 625);
+            encoderBack(0.5, 3250);
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
 
-            encoderBack(0.7, 2150);
-            encoderForward(0.5, 500);
-            encoderTurn(0.5, -1, 730, 730);
-            encoderForward(0.5, 300);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
-            moveFoundation(1);
-            encoderStrafe(0.5, -1, 2150);
+            encoderForward(speed, 500);
+
+//            encoderBack(speed, 2150);
+//            encoderForward(0.4, 500);
+//            encoderTurn(0.3, -1, 730, 730);
+//            encoderForward(0.3, 300);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.3, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(speed, -1, 2150);
         }
 
 
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
             telemetry.addData("skystone path ", 3);
-            telemetry.update();
-            encoderForward(0.2, 60);
+            //telemetry.update();
+            encoderForward(0.2, 20);
+
+            encoderStrafe(0.2, 1, 560);
+
             moveChicken(1);
             //bring chicken down
-            encoderStrafe(0.5, -1, 400);
-            encoderBack(0.5, 1800);
+            encoderStrafe(speed, -1, 420);
+            encoderBack(0.6, 1800);
             //release chicken wing
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
 
-            encoderForward(0.5, 3200);
+            encoderForward(0.6, 3200);
             encoderBack(0.5, 310);
-            encoderStrafe(0.5, 1, 430);
+            encoderStrafe(speed, 1, 460);
             moveChicken(1);
             //bring down chicken wing
-            encoderStrafe(0.5, -1, 450);
+            encoderStrafe(speed, -1, 510);
             encoderBack(0.5, 2900);
             moveChicken(-1);
-            encoderStrafe(0.5, -1, 50);
+            encoderStrafe(speed, -1, 50);
 
-            encoderBack(0.5, 2200);
-            encoderForward(0.5, 600);
-            encoderTurn(0.5, -1, 730, 730);
-            encoderForward(0.5, 500);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
+            encoderForward(speed, 500);
+
+//            encoderBack(0.5, 2200);
+//            encoderForward(0.5, 600);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderForward(0.5, 500);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
 
         }
     }
@@ -160,17 +175,18 @@ public class BlueSquare extends encoderDrive {
 
         if (opModeIsActive()) {
             boolean isDoneWithVuforia = false;
-            while (opModeIsActive() && !isDoneWithVuforia) {
+            while (opModeIsActive()
+                    && !isDoneWithVuforia
+            ) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null /*|| getRuntime() > 7*/) {
+                    if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
                         // step through the list of recognitions and display boundary info.
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
-                            //if (getRuntime() > 7)
                             {
                                 telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                                 telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -181,11 +197,13 @@ public class BlueSquare extends encoderDrive {
                                 //PUT IN i++ HERE TO CHANGE POSITION OF ELEMENT?? - A
                                 i++;
 
-                                if (recognition.getLeft() < 60 && recognition.getRight() < 500) {
+                                if (recognition.getLeft() < 150 && recognition.getRight() < 650) {
                                     position[1] = recognition.getLabel();
+                                    //block 2
                                 }
-                                if (recognition.getLeft() > 240 && recognition.getRight() > 700) {
+                                if (recognition.getLeft() > 240 && recognition.getRight() > 600) {
                                     position[2] = recognition.getLabel();
+                                    //block 3
                                 }
                                 isDoneWithVuforia=true;
                             }
