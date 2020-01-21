@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //WEBSITE: https://stemrobotics.cs.pdx.edu/node/7265
 
-@Autonomous(name="gyrytesty")
+@Autonomous(name="GyroAutoTest")
 //@Disabled
 public class GyroAutoTest extends LinearOpMode
 {
@@ -86,35 +86,56 @@ public class GyroAutoTest extends LinearOpMode
 
         waitForStart();
         resetAngle();
-        //while (opModeIsActive()) {
+    //    while (opModeIsActive()) {
         telemetry.addData("Mode", "running");
         telemetry.addData("angle", getAngle());
         telemetry.update();
-        //}
+     //   }
 
-        //sleep(3000);
+        sleep(3000);
 
-//        while(getAngle() != 90) {
-//            robot.rightBackDrive.setPower(-0.5);
-//            robot.rightFrontDrive.setPower(-0.5);
-//            robot.leftFrontDrive.setPower(0.5);
-//            robot.leftBackDrive.setPower(0.5);
-//        }
+        while(Math.signum(getAngle()) > 0) { //if getAngle() is pos it is to the left
+            //turn right
+            double speed = 0.2;
+            rightBackDrive.setPower(-speed);
+            rightFrontDrive.setPower(-speed);
+            leftFrontDrive.setPower(speed);
+            leftBackDrive.setPower(speed);
+
+            if (getAngle() >= -1 && getAngle() <= 1) {
+                stopMotors();
+            }
+            return;
+        }
+
+        while(Math.signum(getAngle()) < 0) {
+            //turn left
+            double speed = 0.2;
+            rightBackDrive.setPower(speed);
+            rightFrontDrive.setPower(speed);
+            leftFrontDrive.setPower(-speed);
+            leftBackDrive.setPower(-speed);
+
+            if (getAngle() >= -1 && getAngle() <= 1) {
+                stopMotors();
+            }
+            return;
+        }
+
+
 //        rotate(0, 0.3);
 //        telemetry.addData("reached rotate", getAngle());
 
         //rotate(45, 0.3);
-        turnRight(-90);
-        sleep(1000);
-        turnRight(45);
+        //turnRight(-90);
+
+        //turnRight(45);
+
         telemetry.addData("reached 2nd rotate", getAngle());
 
 
         // turn the motors off.
-        rightBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
+        stopMotors();
 
 
         telemetry.update();
@@ -239,12 +260,13 @@ public class GyroAutoTest extends LinearOpMode
                 (360-Math.abs(anglesRight.firstAngle-targetHeading))+
                 (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
                         Math.abs(anglesRight.firstAngle-targetHeading);
+        telemetry.addData("degreesRight 1", degreesRight);
 
         //runtime.reset();
         while(opModeIsActive() &&
                 //runtime.seconds() < timeoutS &&
                 degreesRight>1&&
-                oldDegreesRight-degreesRight>=0) { //check to see if we overshot target
+                oldDegreesRight-degreesRight<=0) { //check to see if we overshot target
 
             scaledSpeed = degreesRight/(100+degreesRight)*speed;
             if(scaledSpeed>1){
@@ -260,6 +282,9 @@ public class GyroAutoTest extends LinearOpMode
                     (360-Math.abs(anglesRight.firstAngle-targetHeading))+
                     (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
                             Math.abs(anglesRight.firstAngle-targetHeading);
+
+            telemetry.addData("degreesRight 2", degreesRight);
+
             if(Math.abs(anglesRight.firstAngle-oldAngle)<1){
                 speed*=1.1;
             } //bump up speed to wheels in case robot stalls before reaching target
@@ -267,6 +292,65 @@ public class GyroAutoTest extends LinearOpMode
             oldAngle=anglesRight.firstAngle;
         }
         //stopWheels(); //our helper method to set all wheel motors to zero
+        telemetry.addData("reached sleep 1", anglesRight.firstAngle);
         sleep(250); //small pause at end of turn
     }
+
+    public void stopMotors() {
+        leftBackDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+    }
+
+    //public void rotateToAngle(int newAngle) {
+    /*
+        double diff = newAngle - getAngle();
+        double diff1 = Math.abs(diff-360);
+        if (newAngle == getAngle()) {
+            stopMotors();
+            return;
+        }
+        while (Math.abs(getAngle() - newAngle) > 3&&opModeIsActive()) {
+            telemetry.addData("newangle", newAngle);
+            telemetry.addData("getangle()", getAngle());
+            telemetry.update();
+            diff = newAngle - getAngle();
+            diff1=Math.abs(getAngle() - newAngle);
+            if ((diff > 0 && diff < 180) || (diff < 0 && Math.abs(diff) > 180)) {
+
+                if(Math.abs(diff1)<13)
+                    rotate(-0.06);
+                else if(Math.abs(diff1)<50)
+                    rotate(-0.1);
+                else if(Math.abs(diff1)<160)
+                    rotate(-0.5);
+                else
+                    rotate(-(0.00928571*Math.abs(diff1))+0.128571);
+            } else {
+
+                if(Math.abs(diff1)<13)
+                    rotate(0.06);
+                else if(Math.abs(diff1)<50)
+                    rotate(0.1);
+                else if(Math.abs(diff1)<160)
+                    rotate(0.5);
+                else
+                    rotate((0.00928571*Math.abs(diff1))+0.128571);
+            }
+
+        }
+        stopMotors();
+    }
+*/
+
+    public void rotate(double power){
+        //negative turns to left
+        leftFrontDrive.setPower(power);
+        leftBackDrive.setPower(power);
+        rightFrontDrive.setPower(-power);
+        rightBackDrive.setPower(-power);
+    }
+
+
 }

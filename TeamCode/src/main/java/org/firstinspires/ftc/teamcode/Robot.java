@@ -32,6 +32,10 @@ public class Robot
     DcMotor leftFrontDrive = null;
     DcMotor rightBackDrive = null;
     DcMotor rightFrontDrive = null;
+
+    DcMotor topLiftMotor = null;
+    DcMotor bottomLiftMotor = null;
+    DcMotor armMotor = null;
 //    DcMotor liftMotor = null;
 //    Servo leftServo = null;
 //    Servo rightServo = null;
@@ -40,6 +44,9 @@ public class Robot
     Servo chickenServo = null;
     Servo FMRight = null;
     Servo FMLeft = null;
+
+    Servo rightClaw = null;
+    Servo leftClaw = null;
 
     //BNO055IMU gyro    = null;
 
@@ -56,6 +63,11 @@ public class Robot
         leftFrontDrive = hwMap.get(DcMotor.class, "leftFrontMotor");
         rightBackDrive = hwMap.get(DcMotor.class, "rightBackMotor");
         rightFrontDrive = hwMap.get(DcMotor.class, "rightFrontMotor");
+
+        topLiftMotor = hwMap.get(DcMotor.class, "topLiftMotor");
+        bottomLiftMotor = hwMap.get(DcMotor.class, "bottomLiftMotor");
+        armMotor = hwMap.get(DcMotor.class, "armMotor");
+
 //        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
 
         //when plugging in servos, black goes left if you're looking at it rightside up
@@ -66,6 +78,9 @@ public class Robot
         chickenServo = hwMap.get(Servo.class, "chickenServo");
         FMRight = hwMap.get(Servo.class, "FMRight");
         FMLeft = hwMap.get(Servo.class, "FMLeft");
+
+        rightClaw = hwMap.get(Servo.class, "rightClaw");
+        leftClaw = hwMap.get(Servo.class, "leftClaw");
 
         //gyro = (BNO055IMU) hwMap.gyroSensor.get("gyro");
 

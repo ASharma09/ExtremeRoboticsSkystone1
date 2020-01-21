@@ -89,7 +89,7 @@ public class ScrimmageTeleOp extends LinearOpMode {
             speedRF = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             speedRB = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
-            double coeff2 = 0.2;
+            double coeff2 = -0.2;
 
             if (gamepad1.left_bumper) {
                 speedLF = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
@@ -98,7 +98,7 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 speedRB = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
             }
 
-            double coeff3 = 1;
+            double coeff3 = -1;
 
             if (gamepad1.right_bumper) {
                 speedLF = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
@@ -149,6 +149,18 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.chickenServo.setPosition(-1);
                 //position -1 is up
             }
+
+            if (gamepad2.dpad_up) {
+                robot.topLiftMotor.setPower(.6);
+                robot.bottomLiftMotor.setPower(.6);
+            }
+
+            if (gamepad2.dpad_up) {
+                robot.topLiftMotor.setPower(-.6);
+                robot.bottomLiftMotor.setPower(-.6);
+            }
+
+
 
 
 
