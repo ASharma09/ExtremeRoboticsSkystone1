@@ -23,10 +23,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //WEBSITE: https://stemrobotics.cs.pdx.edu/node/7265
 
-@Autonomous(name="GyroAutoTest")
+@Autonomous(name="gyrytesty")
 //@Disabled
 public class GyroAutoTest extends LinearOpMode
 {
+
+    Orientation anglesRight = new Orientation();
+    Orientation anglesLeft = new Orientation();
 
     DcMotor leftBackDrive = null;
     DcMotor leftFrontDrive = null;
@@ -90,12 +93,12 @@ public class GyroAutoTest extends LinearOpMode
         waitForStart();
         resetAngle();
         //while (opModeIsActive()) {
-            telemetry.addData("Mode", "running");
-            telemetry.addData("angle", getAngle());
-            telemetry.update();
+        telemetry.addData("Mode", "running");
+        telemetry.addData("angle", getAngle());
+        telemetry.update();
         //}
 
-        sleep(3000);
+        //sleep(3000);
 
 //        while(getAngle() != 90) {
 //            robot.rightBackDrive.setPower(-0.5);
@@ -106,7 +109,10 @@ public class GyroAutoTest extends LinearOpMode
 //        rotate(0, 0.3);
 //        telemetry.addData("reached rotate", getAngle());
 
-        rotate(45, 0.3);
+        //rotate(45, 0.3);
+        turnRight(-90);
+        sleep(1000);
+        turnRight(45);
         telemetry.addData("reached 2nd rotate", getAngle());
 
 
@@ -278,5 +284,114 @@ public class GyroAutoTest extends LinearOpMode
 
         // reset angle tracking on new heading.
         //resetAngle();
+    }
+
+    //https://ftcforum.firstinspires.org/forum/
+    // first-tech-challenge-community-forum-this-is-an-
+    // open-forum/teams-helping-teams-programming/71149-
+    // gyro-in-rev-expansion-hub#post71318
+
+    public void turnLeft(double turnAngle) {
+        sleep(500);
+
+        anglesLeft = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double speed=.5;
+        double oldDegreesLeft=turnAngle;
+        double scaledSpeed= speed;
+        double targetHeading=anglesLeft.firstAngle+turnAngle;
+        double oldAngle=anglesLeft.firstAngle;
+
+        if(targetHeading<-180) {
+            targetHeading+=360;
+        }
+        if(targetHeading>180){
+            targetHeading-=360;
+        }
+
+        double degreesLeft = ((int)(Math.signum(anglesLeft.firstAngle-targetHeading)+1)/2)*
+                (360-Math.abs(anglesLeft.firstAngle-targetHeading))+
+                (int)(Math.signum(targetHeading-anglesLeft.firstAngle)+1)/2*
+                        Math.abs(anglesLeft.firstAngle-targetHeading);
+
+        //runtime.reset();
+        while(opModeIsActive() &&
+                //runtime.seconds() < timeoutS &&
+                degreesLeft>1&&
+                oldDegreesLeft-degreesLeft>=0) { //check to see if we overshot target
+
+            scaledSpeed=degreesLeft/(100+degreesLeft)*speed;
+            if(scaledSpeed>1){
+                scaledSpeed=.1;
+            }
+            leftBackDrive.setPower(scaledSpeed); //extra power to back wheels
+            rightBackDrive.setPower(-1*scaledSpeed); //due to extra weight
+            leftFrontDrive.setPower(scaledSpeed);
+            rightFrontDrive.setPower(-1*scaledSpeed);
+            anglesLeft = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            oldDegreesLeft=degreesLeft;
+            degreesLeft = ((int)(Math.signum(anglesLeft.firstAngle-targetHeading)+1)/2)*
+                    (360-Math.abs(anglesLeft.firstAngle-targetHeading))+
+                    (int)(Math.signum(targetHeading-anglesLeft.firstAngle)+1)/2*
+                            Math.abs(anglesLeft.firstAngle-targetHeading);
+            if(Math.abs(anglesLeft.firstAngle-oldAngle)<1){
+                speed*=1.1;
+            } //bump up speed to wheels in case robot stalls before reaching target
+
+            oldAngle=anglesLeft.firstAngle;
+        }
+        //stopWheels(); //our helper method to set all wheel motors to zero
+        sleep(250); //small pause at end of turn
+    }
+
+    public void turnRight(double turnAngle) {
+        sleep(500);
+
+        anglesRight = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double speed=.5;
+        double oldDegreesRight = turnAngle;
+        double scaledSpeed = speed;
+        double targetHeading = anglesRight.firstAngle+turnAngle;
+        double oldAngle=  anglesRight.firstAngle;
+
+        if(targetHeading<-180) {
+            targetHeading+=360;
+        }
+        if(targetHeading>180){
+            targetHeading-=360;
+        }
+
+        double degreesRight = ((int)(Math.signum(anglesRight.firstAngle-targetHeading)+1)/2)*
+                (360-Math.abs(anglesRight.firstAngle-targetHeading))+
+                (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
+                        Math.abs(anglesRight.firstAngle-targetHeading);
+
+        //runtime.reset();
+        while(opModeIsActive() &&
+                //runtime.seconds() < timeoutS &&
+                degreesRight>1&&
+                oldDegreesRight-degreesRight>=0) { //check to see if we overshot target
+
+            scaledSpeed = degreesRight/(100+degreesRight)*speed;
+            if(scaledSpeed>1){
+                scaledSpeed=.1;
+            }
+            leftBackDrive.setPower(-1*scaledSpeed); //extra power to back wheels
+            rightBackDrive.setPower(scaledSpeed); //due to extra weight
+            leftFrontDrive.setPower(-1*scaledSpeed);
+            rightFrontDrive.setPower(scaledSpeed);
+            anglesRight = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            oldDegreesRight = degreesRight;
+            degreesRight = ((int)(Math.signum(anglesRight.firstAngle-targetHeading)+1)/2)*
+                    (360-Math.abs(anglesRight.firstAngle-targetHeading))+
+                    (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
+                            Math.abs(anglesRight.firstAngle-targetHeading);
+            if(Math.abs(anglesRight.firstAngle-oldAngle)<1){
+                speed*=1.1;
+            } //bump up speed to wheels in case robot stalls before reaching target
+
+            oldAngle=anglesRight.firstAngle;
+        }
+        //stopWheels(); //our helper method to set all wheel motors to zero
+        sleep(250); //small pause at end of turn
     }
 }
