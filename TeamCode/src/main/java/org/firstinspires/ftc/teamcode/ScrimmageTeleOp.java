@@ -57,7 +57,7 @@ import com.qualcomm.robotcore.util.Range;
 public class ScrimmageTeleOp extends LinearOpMode {
     Robot robot = new Robot();
 
-    double coeff = 0.7;
+    double coeff = 0.6;
 
     @Override
     public void runOpMode() {
@@ -84,23 +84,27 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            speedLF = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-            speedLB = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-            speedRF = coeff * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-            speedRB = coeff * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedLF = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedLB = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedRF = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedRB = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+
+            double coeff2 = 0.2;
 
             if (gamepad1.left_bumper) {
-                speedLF = 0.2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedLB = 0.2 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedRF = 0.2 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-                speedRB = 0.2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedLF = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
             }
 
+            double coeff3 = 1;
+
             if (gamepad1.right_bumper) {
-                speedLF = 1 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedLB = 1 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedRF = 1 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-                speedRB = 1 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedLF = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
             }
 
 
@@ -180,10 +184,16 @@ public class ScrimmageTeleOp extends LinearOpMode {
 //                anglePower = -1;
 //            }
 
-            robot.leftFrontDrive.setPower(speedLF);
-            robot.leftBackDrive.setPower(speedLB);
-            robot.rightFrontDrive.setPower(speedRF);
-            robot.rightBackDrive.setPower(speedRB);
+//            robot.leftFrontDrive.setPower(speedLF);
+//            robot.leftBackDrive.setPower(speedLB);
+//            robot.rightFrontDrive.setPower(speedRF);
+//            robot.rightBackDrive.setPower(speedRB);
+
+            robot.leftFrontDrive.setPower(speedRF);
+            robot.leftBackDrive.setPower(speedRB);
+            robot.rightFrontDrive.setPower(speedLF);
+            robot.rightBackDrive.setPower(speedLB);
+
 //            robot.cascadingMotor.setPower(cascadingPower);
 //            robot.angleMotor.setPower(anglePower);
             //robot.liftMotor.setPower(liftPower);
