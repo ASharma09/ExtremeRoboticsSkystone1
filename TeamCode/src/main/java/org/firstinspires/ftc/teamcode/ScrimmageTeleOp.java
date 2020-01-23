@@ -54,6 +54,28 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="ScrimmageTeleOp", group="Linear Opmode")
 
+//TELEOP KEY
+
+/**
+ * Gamepad1:
+ *      sticks move the robot
+ *      left bumper makes robot slower
+ *      right bumper makes robot faster
+ *      button A resets the encoder values
+ *      button Y moves armMotor back
+ *      button X moves armMotor forward
+ *      dpad up makes servos close
+ *      dpad down makes servos open
+ *
+ * Gamepad2:
+ *      button Y moves foundation movers up
+ *      button X moves foundation movers down
+ *      button A moves chicken wing down
+ *      button B moves chicken wing up
+ *      dpad up moves lift motors up
+ *      dpad down moves lift motors down
+ */
+
 public class ScrimmageTeleOp extends LinearOpMode {
     Robot robot = new Robot();
 
@@ -120,6 +142,26 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
+            while (gamepad1.y) {
+                robot.armMotor.setPower(.3);
+            }
+            while (gamepad1.x) {
+                robot.armMotor.setPower(-0.3);
+            }
+
+            if (!gamepad1.x && !gamepad1.y) {
+                robot.armMotor.setPower(0);
+            }
+
+            if (gamepad1.dpad_down) {
+                robot.rightClaw.setPosition(1);
+                robot.leftClaw.setPosition(-1);
+            }
+            if (gamepad1.dpad_up) {
+                robot.rightClaw.setPosition(-1);
+                robot.leftClaw.setPosition(1);
+            }
+
 //            if (gamepad1.x)
 //            {
 //                robot.leftServo.setPosition(1);
@@ -130,34 +172,40 @@ public class ScrimmageTeleOp extends LinearOpMode {
 //                robot.rightServo.setPosition(1);
 //            }
 
-            if (gamepad2.x){
-                robot.FMRight.setPosition(10);
+            if (gamepad2.y){
+                robot.FMRight.setPosition(1);
                 robot.FMLeft.setPosition(-1);
             }
 
-            if (gamepad2.y){
+            if (gamepad2.x){
                 robot.FMRight.setPosition(-1);
                 robot.FMLeft.setPosition(1);
             }
 
-            if (gamepad2.dpad_down){
+            if (gamepad2.a){
                 robot.chickenServo.setPosition(1);
                 //position 1 is down
             }
 
-            if (gamepad2.dpad_up){
+            if (gamepad2.b){
                 robot.chickenServo.setPosition(-1);
                 //position -1 is up
             }
 
-            if (gamepad2.dpad_up) {
-                robot.topLiftMotor.setPower(.6);
+            while (gamepad2.dpad_up) {
+                robot.topLiftMotor.setPower(-.6);
                 robot.bottomLiftMotor.setPower(.6);
             }
 
-            if (gamepad2.dpad_up) {
-                robot.topLiftMotor.setPower(-.6);
+
+            while (gamepad2.dpad_down) {
+                robot.topLiftMotor.setPower(.6);
                 robot.bottomLiftMotor.setPower(-.6);
+            }
+
+            if (!gamepad2.dpad_up && !gamepad2.dpad_down) {
+                robot.topLiftMotor.setPower(0);
+                robot.bottomLiftMotor.setPower(0);
             }
 
 

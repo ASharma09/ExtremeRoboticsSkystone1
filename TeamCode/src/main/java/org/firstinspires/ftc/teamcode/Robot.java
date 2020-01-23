@@ -68,13 +68,6 @@ public class Robot
         bottomLiftMotor = hwMap.get(DcMotor.class, "bottomLiftMotor");
         armMotor = hwMap.get(DcMotor.class, "armMotor");
 
-//        liftMotor = hwMap.get(DcMotor.class, "liftMotor");
-
-        //when plugging in servos, black goes left if you're looking at it rightside up
-//        rightServo = hwMap.get(Servo.class, "rightServo");
-//        leftServo = hwMap.get(Servo.class, "leftServo");
-//        clawServo = hwMap.get(Servo.class, "clawServo");
-//        liftServo = hwMap.get(Servo.class, "liftServo");
         chickenServo = hwMap.get(Servo.class, "chickenServo");
         FMRight = hwMap.get(Servo.class, "FMRight");
         FMLeft = hwMap.get(Servo.class, "FMLeft");
@@ -112,5 +105,12 @@ public class Robot
     }
 
     //ADD LATCH FOUNDATION METHOD HERE
+
+    public void stopMotors() {
+        leftBackDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+    }
 
 }
