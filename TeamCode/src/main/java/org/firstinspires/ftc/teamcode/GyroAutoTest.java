@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //WEBSITE: https://stemrobotics.cs.pdx.edu/node/7265
 
-@Autonomous(name="GyroAutoTest")
+//@Autonomous(name="GyroAutoTest")
 //@Disabled
 public class GyroAutoTest extends LinearOpMode
 {

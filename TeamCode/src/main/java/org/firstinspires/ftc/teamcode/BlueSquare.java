@@ -1,11 +1,17 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -16,7 +22,25 @@ import java.util.List;
 @Autonomous(name="BlueSquare")
 public class BlueSquare extends encoderDrive {
 
+    DcMotor leftBackDrive = null;
+    DcMotor leftFrontDrive = null;
+    DcMotor rightBackDrive = null;
+    DcMotor rightFrontDrive = null;
+
+    DcMotor topLiftMotor = null;
+    DcMotor bottomLiftMotor = null;
+    DcMotor armMotor = null;
+
+    Servo chickenServo = null;
+    Servo FMRight = null;
+    Servo FMLeft = null;
+
+    Servo rightClaw = null;
+    Servo leftClaw = null;
+
     int skystonePosition = 0;
+
+    Robot robot = new Robot();
 
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
@@ -37,9 +61,51 @@ public class BlueSquare extends encoderDrive {
 
     private TFObjectDetector tfod;
 
+    BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double                  globalAngle;
+
     @Override
     public void runOpMode() {
         super.runOpMode();
+
+        initialize();
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+
+
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        //resetAngle();
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.update();
+
+        // wait for start button.
+
+        resetAngle();
 
         telemetry.addData("Status", "Initialized");
         //GO!!!
@@ -55,21 +121,21 @@ public class BlueSquare extends encoderDrive {
         skystonePosition = runVuforia();
         //encoderStrafe(0.2, 1, 540);
 
-        if (skystonePosition == 1) {
-            //encoderBack(0.2, 350);
-            telemetry.addData("skystone path ", 1);
-            //telemetry.update();
-            encoderForward(0.5, 770);
-
-            encoderStrafe(0.2, 1, 560);
-
-            moveChicken(1);
-            encoderStrafe(0.5, -1, 420);
-            encoderBack(0.5, 2600);
-            moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
-
-            encoderForward(speed,  500);
+//        if (skystonePosition == 1) {
+//            //encoderBack(0.2, 350);
+//            telemetry.addData("skystone path ", 1);
+//            telemetry.update();
+//            encoderForward(0.5, 770);
+//
+//            encoderStrafe(0.2, 1, 560);
+//
+//            moveChicken(1);
+//            encoderStrafe(0.5, -1, 420);
+//            encoderBack(0.5, 2600);
+//            moveChicken(-1);
+//            encoderStrafe(speed, -1, 50);
+//
+//            encoderForward(speed,  500);
 
 //            encoderBack(0.5, 2200);
 //            encoderForward(speed, 600);
@@ -79,31 +145,31 @@ public class BlueSquare extends encoderDrive {
 //            sleep(1000);
 //            encoderBack(0.5, 2000);
 
-        }
-        if (skystonePosition == 2) {
-            //move a bit less to the right than position 1
-            telemetry.addData("skystone path ", 2);
-            //telemetry.update();
-            encoderForward(0.2, 510);
-
-            encoderStrafe(0.2, 1, 560);
-
-            moveChicken(1);
-            encoderStrafe(speed, -1, 470);
-            encoderBack(speed, 2400);
-            moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
-
-            encoderForward(0.4, 3400);
-            //encoderForward(0.3, 344);
-            encoderStrafe(speed, 1, 600);
-            moveChicken(1);
-            encoderStrafe(speed, -1, 625);
-            encoderBack(0.5, 3250);
-            moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
-
-            encoderForward(speed, 500);
+        //}
+//        if (skystonePosition == 2) {
+//            //move a bit less to the right than position 1
+//            telemetry.addData("skystone path ", 2);
+//            telemetry.update();
+//            encoderForward(0.2, 510);
+//
+//            encoderStrafe(0.2, 1, 560);
+//
+//            moveChicken(1);
+//            encoderStrafe(speed, -1, 470);
+//            encoderBack(speed, 2400);
+//            moveChicken(-1);
+//            encoderStrafe(speed, -1, 50);
+//
+//            encoderForward(0.4, 3400);
+//            //encoderForward(0.3, 344);
+//            encoderStrafe(speed, 1, 600);
+//            moveChicken(1);
+//            encoderStrafe(speed, -1, 625);
+//            encoderBack(0.5, 3250);
+//            moveChicken(-1);
+//            encoderStrafe(speed, -1, 50);
+//
+//            encoderForward(speed, 500);
 
 //            encoderBack(speed, 2150);
 //            encoderForward(0.4, 500);
@@ -114,20 +180,19 @@ public class BlueSquare extends encoderDrive {
 //            encoderBack(0.3, 2000);
 //            moveFoundation(1);
 //            encoderStrafe(speed, -1, 2150);
-        }
+        //}
 
-
-        if (skystonePosition == 3) {
+//        if (skystonePosition == 3) {
             //move the same amount to the left as position 2
             telemetry.addData("skystone path ", 3);
-            //telemetry.update();
-            encoderForward(0.2, 20);
+            telemetry.update();
+            encoderForward(0.2, 90);
 
-            encoderStrafe(0.2, 1, 560);
+            encoderStrafe(0.2, 1, 590);
 
             moveChicken(1);
             //bring chicken down
-            encoderStrafe(speed, -1, 420);
+            encoderStrafe(speed, -1, 460);
             encoderBack(0.6, 1800);
             //release chicken wing
             moveChicken(-1);
@@ -153,7 +218,7 @@ public class BlueSquare extends encoderDrive {
 //            sleep(1000);
 //            encoderBack(0.5, 2000);
 
-        }
+        //}
     }
 
     public int runVuforia() {
@@ -274,6 +339,99 @@ public class BlueSquare extends encoderDrive {
         tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
+    public void stopMotors() {
+        leftBackDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+    }
+
+    public void toAngle(double angle) {
+        if(getAngle() > angle) {
+            while (getAngle() > angle) { //if getAngle() is pos it is to the left
+                //turn right
+
+                double speed = 0.1;
+                rightBackDrive.setPower(speed);
+                rightFrontDrive.setPower(speed);
+                leftFrontDrive.setPower(-speed);
+                leftBackDrive.setPower(-speed);
+
+            }
+        }
+        else {
+            while (getAngle() < angle) {
+                //turn left
+                double speed = 0.1;
+                rightBackDrive.setPower(-speed);
+                rightFrontDrive.setPower(-speed);
+                leftFrontDrive.setPower(speed);
+                leftBackDrive.setPower(speed);
+
+            }
+        }
+
+        stopMotors();
+    }
+
+    public void initialize() {
+        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        topLiftMotor = hardwareMap.get(DcMotor.class, "topLiftMotor");
+        bottomLiftMotor = hardwareMap.get(DcMotor.class, "bottomLiftMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+
+        chickenServo = hardwareMap.get(Servo.class, "chickenServo");
+        FMRight = hardwareMap.get(Servo.class, "FMRight");
+        FMLeft = hardwareMap.get(Servo.class, "FMLeft");
+
+        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
+        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
     }
 
 
