@@ -126,9 +126,9 @@ public class RedSquare extends encoderDrive {
 
         waitForStart();
 
-        encoderStrafe(speed, 1, 830);
-        skystonePosition = runVuforia();
-        encoderStrafe(speed, 1, 575);
+        //encoderStrafe(speed, 1, 830);
+        //skystonePosition = runVuforia();
+        //encoderStrafe(speed, 1, 575);
 
         //MOVE TO ALIGN WITH SKYSTONE POSITION
 

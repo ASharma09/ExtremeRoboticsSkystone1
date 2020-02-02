@@ -88,12 +88,14 @@ public class pls_work_pls extends LinearOpMode {
         telemetry.addData("angle before ze loops", getAngle());
         telemetry.update();
 
-        sleep(2000);
-        if(getAngle() > 0) {
-            while (getAngle() > 0) { //if getAngle() is pos it is to the left
-                //turn right
+        double angle = getAngle();
 
-                double speed = 0.1;
+        sleep(2000);
+        if(angle > 0) {
+            while (angle > 0) { //if getAngle() is pos it is to the left
+                //turn right
+                telemetry.addData("turning right", getAngle());
+                double speed = 0.3;
                 rightBackDrive.setPower(speed);
                 rightFrontDrive.setPower(speed);
                 leftFrontDrive.setPower(-speed);
@@ -102,9 +104,10 @@ public class pls_work_pls extends LinearOpMode {
             }
         }
         else {
-        while (getAngle() < 0) {
+        while (angle < 0) {
             //turn left
-            double speed = 0.1;
+            telemetry.addData("turning left", getAngle());
+            double speed = 0.3;
             rightBackDrive.setPower(-speed);
             rightFrontDrive.setPower(-speed);
             leftFrontDrive.setPower(speed);
