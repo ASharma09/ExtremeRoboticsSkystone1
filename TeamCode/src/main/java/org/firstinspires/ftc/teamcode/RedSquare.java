@@ -119,24 +119,24 @@ public class RedSquare extends encoderDrive {
 
         final double speed = 0.3;
 
-        resetAngle();
+        //resetAngle();
 
         moveChicken(-1);
         moveFoundation(1);
 
         waitForStart();
 
-        //encoderStrafe(speed, 1, 830);
-        //skystonePosition = runVuforia();
-        //encoderStrafe(speed, 1, 575);
+        encoderStrafe(speed, 1, 830);
+        skystonePosition = runVuforia();
+        encoderStrafe(speed, 1, 575);
 
         //MOVE TO ALIGN WITH SKYSTONE POSITION
 
-        encoderTurn(.5, 1, 34, 34);
-        toAngle();
+//        encoderTurn(.5, 1, 34, 34);
+//        toAngle();
 
 
-        /*
+
         if (skystonePosition == 1) {
             //encoderBack(0.2, 350);
             encoderBack(0.5, 300);
@@ -235,7 +235,7 @@ public class RedSquare extends encoderDrive {
             moveFoundation(1);
             encoderStrafe(0.5, 1, 2150);
         }
-        */
+
 
     }
 

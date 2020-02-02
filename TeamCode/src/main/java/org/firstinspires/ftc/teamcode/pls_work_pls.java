@@ -85,10 +85,12 @@ public class pls_work_pls extends LinearOpMode {
 
         sleep(3000);
 
-        telemetry.addData("angle before the loops", getAngle());
+        double angle = getAngle();
+
+        telemetry.addData("angle before the loops", angle);
         telemetry.update();
 
-        double angle = getAngle();
+
 
         sleep(2000);
         if(angle > 0) {
