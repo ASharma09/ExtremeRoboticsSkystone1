@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Autonomous(name = "encoderDrive", group = "ExtremeBot")
 
 public class encoderDrive extends LinearOpMode {
-    Robot robot = new Robot(); //use from robot class
+    Robot robot; //use from robot class
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 1425.2;    // eg: ANDYMARK Motor Encoder
@@ -20,6 +20,10 @@ public class encoderDrive extends LinearOpMode {
     static final double TURN_SPEED = 0.5;
 
     double[] factor = {1, 1, 1, 1};
+
+    public encoderDrive() {
+        robot = new Robot();
+    }
 
     //turn 90 degrees is 2360
     //100 ticks is about 1 inch when going forward
