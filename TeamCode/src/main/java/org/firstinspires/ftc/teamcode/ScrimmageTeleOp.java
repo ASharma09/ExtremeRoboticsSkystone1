@@ -106,27 +106,27 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            speedLF = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-            speedLB = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-            speedRF = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-            speedRB = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedLF = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedLB = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+            speedRF = coeff * -(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+            speedRB = coeff * -(gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
 
             double coeff2 = -0.2;
 
             if (gamepad1.left_bumper) {
-                speedLF = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedLB = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedRF = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-                speedRB = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedLF = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = coeff2 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = coeff2 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             }
 
             double coeff3 = -1;
 
             if (gamepad1.right_bumper) {
-                speedLF = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedLB = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-                speedRF = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
-                speedRB = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedLF = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedLB = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+                speedRF = coeff3 * (gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+                speedRB = coeff3 * (gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             }
 
 
@@ -153,11 +153,11 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.armMotor.setPower(0);
             }
 
-            if (gamepad1.dpad_down) {
+            if (gamepad2.x) {
                 robot.rightClaw.setPosition(1);
                 robot.leftClaw.setPosition(-1);
             }
-            if (gamepad1.dpad_up) {
+            if (gamepad2.y) {
                 robot.rightClaw.setPosition(-1);
                 robot.leftClaw.setPosition(1);
             }
@@ -172,12 +172,12 @@ public class ScrimmageTeleOp extends LinearOpMode {
 //                robot.rightServo.setPosition(1);
 //            }
 
-            if (gamepad2.y){
+            if (gamepad1.dpad_up){
                 robot.FMRight.setPosition(1);
                 robot.FMLeft.setPosition(-1);
             }
 
-            if (gamepad2.x){
+            if (gamepad1.dpad_down){
                 robot.FMRight.setPosition(-1);
                 robot.FMLeft.setPosition(1);
             }

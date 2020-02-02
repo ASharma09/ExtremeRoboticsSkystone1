@@ -1,4 +1,10 @@
-
+// Simple autonomous program that drives bot forward until end of period
+// or touch sensor is hit. If touched, backs up a bit and turns 90 degrees
+// right and keeps going. Demonstrates obstacle avoidance and use of the
+// REV Hub's built in IMU in place of a gyro. Also uses gamepad1 buttons to
+// simulate touch sensor press and supports left as well as right turn.
+//
+// Also uses IMU to drive in a straight line when not avoiding an obstacle.
 
 package org.firstinspires.ftc.teamcode;
 
@@ -17,9 +23,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //WEBSITE: https://stemrobotics.cs.pdx.edu/node/7265
 
-//@Autonomous(name="GyroAutoTest")
+@Autonomous(name="gyrytesty")
 //@Disabled
-public class GyroAutoTest extends LinearOpMode
+public class alsogyrotestugh extends LinearOpMode
 {
 
     Orientation anglesRight = new Orientation();
@@ -29,7 +35,6 @@ public class GyroAutoTest extends LinearOpMode
     DcMotor leftFrontDrive = null;
     DcMotor rightBackDrive = null;
     DcMotor rightFrontDrive = null;
-    //hhh
 
     //Robot robot = new Robot();
     BNO055IMU               imu;
@@ -87,15 +92,20 @@ public class GyroAutoTest extends LinearOpMode
 
         waitForStart();
         resetAngle();
-    //    while (opModeIsActive()) {
+        //while (opModeIsActive()) {
         telemetry.addData("Mode", "running");
         telemetry.addData("angle", getAngle());
         telemetry.update();
-     //   }
+        //}
 
         sleep(3000);
 
-        while(Math.signum(getAngle()) > 0) { //if getAngle() is pos it is to the left
+        telemetry.addData("angle before ze loops", getAngle());
+        telemetry.update();
+
+        sleep(2000);
+
+        while(getAngle() > 0) { //if getAngle() is pos it is to the left
             //turn right
             double speed = 0.2;
             rightBackDrive.setPower(-speed);
@@ -109,7 +119,7 @@ public class GyroAutoTest extends LinearOpMode
             return;
         }
 
-        while(Math.signum(getAngle()) < 0) {
+        while(getAngle() < 0) {
             //turn left
             double speed = 0.2;
             rightBackDrive.setPower(speed);
@@ -123,24 +133,52 @@ public class GyroAutoTest extends LinearOpMode
             return;
         }
 
+        telemetry.addData("i reached end of loops", getAngle());
+        telemetry.update();
 
+        sleep(3000);
+
+//        while(getAngle() != 90) {
+//            robot.rightBackDrive.setPower(-0.5);
+//            robot.rightFrontDrive.setPower(-0.5);
+//            robot.leftFrontDrive.setPower(0.5);
+//            robot.leftBackDrive.setPower(0.5);
+//        }
 //        rotate(0, 0.3);
 //        telemetry.addData("reached rotate", getAngle());
 
         //rotate(45, 0.3);
-        //turnRight(-90);
 
-        //turnRight(45);
 
-        telemetry.addData("reached 2nd rotate", getAngle());
 
+        // drive until end of period.
+
+//        while (opModeIsActive())
+//        {
+//            // Use gyro to drive in a straight line.
+//            correction = checkDirection();
+//
+//            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+//            telemetry.addData("2 global heading", globalAngle);
+//            telemetry.addData("3 correction", correction);
+//            telemetry.update();
+//
+//            leftBackDrive.setPower(power - correction);
+//            leftFrontDrive.setPower(power - correction);
+//            rightBackDrive.setPower(power + correction);
+//            rightFrontDrive.setPower(power + correction);
+//
+//            // We record the sensor values because we will test them in more than
+//            // one place with time passing between those places. See the lesson on
+//            // Timing Considerations to know why.
+//
+//        }
 
         // turn the motors off.
-        stopMotors();
-
-
-        telemetry.update();
-        sleep(3000);
+        rightBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
 
     }
 
@@ -181,9 +219,108 @@ public class GyroAutoTest extends LinearOpMode
         return globalAngle;
     }
 
+    /**
+     * See if we are moving in a straight line and if not return a power correction value.
+     * @return Power adjustment, + is adjust left - is adjust right.
+     */
+    private double checkDirection()
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle, gain = .10;
 
-    /*https://ftcforum.firstinspires.org/forum/first-tech-challenge-community-forum-this-is-an-open-forum/teams-helping-teams-programming/71149-gyro-in-rev-expansion-hub#post71318*/
-    //Link above is where I got turnLeft code
+        angle = getAngle();
+
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
+
+    /**
+     * Rotate left or right the number of degrees. Does not support turning more than 180 degrees.
+     * @param degrees Degrees to turn, + is left - is right
+     */
+    private void rotate(int degrees, double power)
+    {
+        double  leftPower, rightPower;
+
+        // restart imu movement tracking.
+        resetAngle();
+
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        if (degrees < 0)
+        {   // turn right.
+            leftPower = power;
+            rightPower = -power;
+        }
+        else if (degrees > 0)
+        {   // turn left.
+            leftPower = -power;
+            rightPower = power;
+        }
+        else return;
+
+        // set power to rotate.
+
+        while (degrees != getAngle()) {
+            leftFrontDrive.setPower(leftPower);
+            leftBackDrive.setPower(leftPower);
+            rightFrontDrive.setPower(rightPower);
+            rightBackDrive.setPower(rightPower);
+            //telemetry.addData("angle", getAngle());
+        }
+        if (degrees == getAngle()) {
+            rightBackDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            leftFrontDrive.setPower(0);
+            //telemetry.addData("angle", getAngle());
+            //telemetry.update();
+        }
+
+        // rotate until turn is completed.
+//        if (degrees < 0)
+//        {
+//            // On right turn we have to get off zero first.
+//            while (opModeIsActive() && getAngle() == 0) {
+//
+//            }
+//
+//            while (opModeIsActive() && getAngle() > degrees) {
+//
+//            }
+//        }
+//        if (degrees > 0) {    // left turn.
+//            while (opModeIsActive() && getAngle() < degrees) {
+//
+//            }
+//        }
+
+//        // turn the motors off.
+//        rightBackDrive.setPower(0);
+//        rightFrontDrive.setPower(0);
+//        leftBackDrive.setPower(0);
+//        leftFrontDrive.setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+
+        // reset angle tracking on new heading.
+        //resetAngle();
+    }
+
+    //https://ftcforum.firstinspires.org/forum/
+    // first-tech-challenge-community-forum-this-is-an-
+    // open-forum/teams-helping-teams-programming/71149-
+    // gyro-in-rev-expansion-hub#post71318
 
     public void turnLeft(double turnAngle) {
         sleep(500);
@@ -237,9 +374,6 @@ public class GyroAutoTest extends LinearOpMode
         sleep(250); //small pause at end of turn
     }
 
-    //This is what I need help with. apparently I need different code for turnleft and turnright?
-    //But I don't know how to make turnLeft into a turnRight...
-
     public void turnRight(double turnAngle) {
         sleep(500);
 
@@ -261,13 +395,12 @@ public class GyroAutoTest extends LinearOpMode
                 (360-Math.abs(anglesRight.firstAngle-targetHeading))+
                 (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
                         Math.abs(anglesRight.firstAngle-targetHeading);
-        telemetry.addData("degreesRight 1", degreesRight);
 
         //runtime.reset();
         while(opModeIsActive() &&
                 //runtime.seconds() < timeoutS &&
                 degreesRight>1&&
-                oldDegreesRight-degreesRight<=0) { //check to see if we overshot target
+                oldDegreesRight-degreesRight>=0) { //check to see if we overshot target
 
             scaledSpeed = degreesRight/(100+degreesRight)*speed;
             if(scaledSpeed>1){
@@ -283,9 +416,6 @@ public class GyroAutoTest extends LinearOpMode
                     (360-Math.abs(anglesRight.firstAngle-targetHeading))+
                     (int)(Math.signum(targetHeading-anglesRight.firstAngle)+1)/2*
                             Math.abs(anglesRight.firstAngle-targetHeading);
-
-            telemetry.addData("degreesRight 2", degreesRight);
-
             if(Math.abs(anglesRight.firstAngle-oldAngle)<1){
                 speed*=1.1;
             } //bump up speed to wheels in case robot stalls before reaching target
@@ -293,7 +423,6 @@ public class GyroAutoTest extends LinearOpMode
             oldAngle=anglesRight.firstAngle;
         }
         //stopWheels(); //our helper method to set all wheel motors to zero
-        telemetry.addData("reached sleep 1", anglesRight.firstAngle);
         sleep(250); //small pause at end of turn
     }
 
@@ -303,55 +432,4 @@ public class GyroAutoTest extends LinearOpMode
         rightBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
     }
-
-    //public void rotateToAngle(int newAngle) {
-    /*
-        double diff = newAngle - getAngle();
-        double diff1 = Math.abs(diff-360);
-        if (newAngle == getAngle()) {
-            stopMotors();
-            return;
-        }
-        while (Math.abs(getAngle() - newAngle) > 3&&opModeIsActive()) {
-            telemetry.addData("newangle", newAngle);
-            telemetry.addData("getangle()", getAngle());
-            telemetry.update();
-            diff = newAngle - getAngle();
-            diff1=Math.abs(getAngle() - newAngle);
-            if ((diff > 0 && diff < 180) || (diff < 0 && Math.abs(diff) > 180)) {
-
-                if(Math.abs(diff1)<13)
-                    rotate(-0.06);
-                else if(Math.abs(diff1)<50)
-                    rotate(-0.1);
-                else if(Math.abs(diff1)<160)
-                    rotate(-0.5);
-                else
-                    rotate(-(0.00928571*Math.abs(diff1))+0.128571);
-            } else {
-
-                if(Math.abs(diff1)<13)
-                    rotate(0.06);
-                else if(Math.abs(diff1)<50)
-                    rotate(0.1);
-                else if(Math.abs(diff1)<160)
-                    rotate(0.5);
-                else
-                    rotate((0.00928571*Math.abs(diff1))+0.128571);
-            }
-
-        }
-        stopMotors();
-    }
-*/
-
-    public void rotate(double power){
-        //negative turns to left
-        leftFrontDrive.setPower(power);
-        leftBackDrive.setPower(power);
-        rightFrontDrive.setPower(-power);
-        rightBackDrive.setPower(-power);
-    }
-
-
 }

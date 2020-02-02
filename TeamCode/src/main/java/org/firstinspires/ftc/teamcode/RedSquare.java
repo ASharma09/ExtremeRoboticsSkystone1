@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -20,6 +26,16 @@ public class RedSquare extends encoderDrive {
 
     //Creating an instance of the class doesn't work because it doesn't actually use vuforia
     //ExternalCameraDetection ECD = new ExternalCameraDetection();
+
+
+    BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double                  globalAngle;
+
+    // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+    // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+    // and named "imu".
+
 
 
     //skystonePosition is for the movement part of the autonomous
@@ -57,6 +73,32 @@ public class RedSquare extends encoderDrive {
     public void runOpMode() {
         super.runOpMode();
 
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        //resetAngle();
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.update();
+
         //runVuforia();
         //telemetry.addData("Skystone position", getSkystone());
 
@@ -77,6 +119,8 @@ public class RedSquare extends encoderDrive {
 
         final double speed = 0.3;
 
+        resetAngle();
+
         moveChicken(-1);
         moveFoundation(1);
 
@@ -87,96 +131,111 @@ public class RedSquare extends encoderDrive {
         encoderStrafe(speed, 1, 575);
 
         //MOVE TO ALIGN WITH SKYSTONE POSITION
+
+        encoderTurn(.5, 1, 34, 34);
+        toAngle();
+
+
+        /*
         if (skystonePosition == 1) {
             //encoderBack(0.2, 350);
             encoderBack(0.5, 300);
+            encoderStrafe(0.4, 1, 100);
+            //encoderTurn(0.3, 1, 60, 60);
             moveChicken(1);
-            encoderStrafe(speed, -1, 400);
+            encoderStrafe(speed, -1, 450);
             encoderForward(0.5, 2300);
             moveChicken(-1);
+            //encoderTurn(0.3, 1, 40, 40);
             //encoderStrafe(0.5, -1, 50);
 
-            encoderBack(0.5, 3350);
+            encoderBack(0.5, 3600);
             encoderForward(0.5, 50);
-            encoderStrafe(speed, 1, 350);
+            encoderStrafe(speed, 1, 600);
             moveChicken(1);
-            encoderStrafe(speed, -1, 600);
+            encoderStrafe(speed, -1, 770);
             encoderBack(speed, 200);
-            encoderForward(0.5, 3400);
+            encoderForward(0.5, 3600);
             moveChicken(-1);
+            encoderBack(0.5, 550);
 
-            encoderBack(0.5, 500);
 
-//            encoderForward(0.6, 1650);
-//            encoderTurn(0.5, -1, 730, 730);
-//            encoderStrafe(0.5, -1, 500);
-//            encoderStrafe(0.5, 1, 650);
-//            encoderForward(0.5, 450);
-//            moveFoundation(-1);
-//            sleep(1000);
-//            encoderBack(0.7, 2000);
-//            moveFoundation(1);
-//            encoderStrafe(0.5, 1, 2150);
+           encoderForward(0.6, 1650);
+            encoderTurn(0.5, -1, 730, 730);
+            encoderStrafe(0.5, -1, 500);
+            encoderStrafe(0.5, 1, 650);
+            encoderForward(0.5, 450);
+            moveFoundation(-1);
+            sleep(1000);
+            encoderBack(0.7, 2000);
+            moveFoundation(1);
+            encoderStrafe(0.5, 1, 2150);
         }
         if (skystonePosition == 2 || skystonePosition == 0) {
             //move a bit less to the right than position 1
             encoderBack(0.2, 60);
+            encoderStrafe(0.5, 1, 125);
+            //encoderTurn(0.3, 1, 60, 60);
             moveChicken(1);
-            encoderStrafe(speed, -1, 400);
+            encoderStrafe(speed, -1, 520);
             encoderForward(0.5, 1900);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
+            //encoderTurn(0.3, 1, 50, 50);
 
             encoderBack(0.5, 3300);
             encoderForward(0.3, 344);
-            encoderStrafe(speed, 1, 430);
+            encoderStrafe(speed, 1, 460);
             moveChicken(1);
             encoderStrafe(speed, -1, 650);
-            encoderForward(0.5, 2850);
+            encoderForward(0.5, 3100);
             moveChicken(-1);
+            encoderBack(0.5, 600);
 
-            encoderBack(0.5, 500);
 
-//            encoderForward(0.5, 2300);
-//            encoderTurn(0.5, -1, 730, 730);
-//            encoderStrafe(0.5, -1, 500);
-//            encoderStrafe(0.5, 1, 650);
-//            encoderForward(0.5, 450);
-//            moveFoundation(-1);
-//            sleep(1000);
-//            encoderBack(0.5, 2000);
-//            moveFoundation(1);
-//            encoderStrafe(0.5, 1, 2150);
+            encoderForward(0.5, 2300);
+            encoderTurn(0.5, -1, 730, 730);
+            encoderStrafe(0.5, -1, 500);
+            encoderStrafe(0.5, 1, 650);
+            encoderForward(0.5, 450);
+            moveFoundation(-1);
+            sleep(1000);
+            encoderBack(0.5, 2000);
+            moveFoundation(1);
+            encoderStrafe(0.5, 1, 2150);
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
-            encoderForward(0.2, 310);
+            encoderForward(0.2, 390);
+            //encoderTurn(0.3, 1, 70, 70);
             moveChicken(1);
-            encoderStrafe(speed, -1, 400);
-            encoderForward(0.5, 1400);
+            encoderStrafe(speed, -1, 450);
+            encoderForward(0.5, 2000);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
+            //encoderTurn(0.3, 1, 30, 30);
 
-            encoderBack(0.5, 2470);
-            encoderStrafe(speed, 1, 400);
+            encoderBack(0.8, 3800);
+            encoderForward(.5,600);
+            encoderStrafe(speed, 1, 680);
             moveChicken(1);
             encoderStrafe(speed, -1, 620);
-            encoderForward(0.5, 2700);
+            encoderForward(0.5, 3000);
             moveChicken(-1);
 
-            encoderBack(0.5, 500);
 
-//            encoderForward(0.5, 2300);
-//            encoderTurn(0.5, -1, 730, 730);
-//            encoderStrafe(0.5, -1, 500);
-//            encoderStrafe(0.5, 1, 650);
-//            encoderForward(0.5, 450);
-//            moveFoundation(-1);
-//            sleep(1000);
-//            encoderBack(0.5, 2000);
-//            moveFoundation(1);
-//            encoderStrafe(0.5, 1, 2150);
+            encoderForward(0.5, 2300);
+            //encoderTurn(0.5, -1, 730, 730);
+            encoderStrafe(0.5, -1, 500);
+            encoderStrafe(0.5, 1, 650);
+            encoderForward(0.5, 450);
+            moveFoundation(-1);
+            sleep(1000);
+            encoderBack(0.5, 2000);
+            moveFoundation(1);
+            encoderStrafe(0.5, 1, 2150);
         }
+        */
 
     }
 
@@ -302,6 +361,71 @@ public class RedSquare extends encoderDrive {
         tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
+    public void stopMotors() {
+        robot.leftBackDrive.setPower(0);
+        robot.leftFrontDrive.setPower(0);
+        robot.rightBackDrive.setPower(0);
+        robot.rightFrontDrive.setPower(0);
+    }
+
+    public void toAngle() {
+        if(getAngle() > 0) {
+            while (getAngle() > 0) { //if getAngle() is pos it is to the left
+                //turn right
+
+                double speed = 0.1;
+                robot.rightBackDrive.setPower(speed);
+                robot.rightFrontDrive.setPower(speed);
+                robot.leftFrontDrive.setPower(-speed);
+                robot.leftBackDrive.setPower(-speed);
+
+            }
+        }
+        else {
+            while (getAngle() < 0) {
+                //turn left
+                double speed = 0.1;
+                robot.rightBackDrive.setPower(-speed);
+                robot.rightFrontDrive.setPower(-speed);
+                robot.leftFrontDrive.setPower(speed);
+                robot.leftBackDrive.setPower(speed);
+
+            }
+        }
+
+        stopMotors();
     }
 
 

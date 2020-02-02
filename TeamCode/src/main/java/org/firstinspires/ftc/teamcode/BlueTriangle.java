@@ -27,14 +27,28 @@ public class BlueTriangle extends encoderDrive {
 
         waitForStart();
 
-        encoderStrafe(speed, -1, 400);
+/*        encoderStrafe(speed, -1, 400);
         encoderForward(speed, 1450);
         moveFoundation(-1);
         sleep(1000);
         encoderBack(0.5, 1700);
         moveFoundation(1);
         sleep(1000);
-        encoderStrafe(0.5, 1, 2250);
+        encoderStrafe(0.5, 1, 2250);*/
+
+        encoderForward(0.3, 250);
+        encoderStrafe(0.3, -1, 1250);
+        encoderStrafe(0.3, 1, 400);
+        encoderForward(0.3, 1300);
+        moveFoundation(-1);
+        sleep(1000);
+        encoderBack(0.3, 1700);
+        moveFoundation(1);
+        sleep(500);
+        encoderForward(0.3, 80);
+        encoderStrafe(0.3, 1, 1500);
+        encoderTurn(0.3, 1, 110, 110);
+        encoderStrafe(0.3, 1, 1200);
 
 
     }
