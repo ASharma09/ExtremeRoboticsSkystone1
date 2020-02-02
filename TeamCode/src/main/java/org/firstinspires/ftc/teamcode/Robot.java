@@ -106,11 +106,5 @@ public class Robot
 
     //ADD LATCH FOUNDATION METHOD HERE
 
-    public void stopMotors() {
-        leftBackDrive.setPower(0);
-        leftFrontDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-    }
 
 }

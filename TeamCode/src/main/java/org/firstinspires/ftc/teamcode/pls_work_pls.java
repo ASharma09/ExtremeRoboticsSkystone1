@@ -14,24 +14,24 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous (name="pls work pls")
 public class pls_work_pls extends LinearOpMode {
 
-    encoderDrive encoder = new encoderDrive();
+    //encoderDrive encoder = new encoderDrive();
 
-//    Robot robot = new Robot();
-//    DcMotor leftBackDrive = null;
-//    DcMotor leftFrontDrive = null;
-//    DcMotor rightBackDrive = null;
-//    DcMotor rightFrontDrive = null;
-//
-//    DcMotor topLiftMotor = null;
-//    DcMotor bottomLiftMotor = null;
-//    DcMotor armMotor = null;
-//
-//    Servo chickenServo = null;
-//    Servo FMRight = null;
-//    Servo FMLeft = null;
-//
-//    Servo rightClaw = null;
-//    Servo leftClaw = null;
+    //Robot robot = new Robot();
+    DcMotor leftBackDrive = null;
+    DcMotor leftFrontDrive = null;
+    DcMotor rightBackDrive = null;
+    DcMotor rightFrontDrive = null;
+
+    DcMotor topLiftMotor = null;
+    DcMotor bottomLiftMotor = null;
+    DcMotor armMotor = null;
+
+    Servo chickenServo = null;
+    Servo FMRight = null;
+    Servo FMLeft = null;
+
+    Servo rightClaw = null;
+    Servo leftClaw = null;
 
     //Robot robot = new Robot();
     BNO055IMU imu;
@@ -41,7 +41,7 @@ public class pls_work_pls extends LinearOpMode {
     public void runOpMode() throws InterruptedException
     {
 
-        //initialize();
+        initialize();
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -102,11 +102,11 @@ public class pls_work_pls extends LinearOpMode {
                 telemetry.update();
                 sleep(1000);
                 double speed = 0.3;
-//                rightBackDrive.setPower(speed);
-//                rightFrontDrive.setPower(speed);
-//                leftFrontDrive.setPower(-speed);
-//                leftBackDrive.setPower(-speed);
-                encoder.encoderTurn(.5, 1, 3, 3);
+                rightBackDrive.setPower(speed);
+                rightFrontDrive.setPower(speed);
+                leftFrontDrive.setPower(-speed);
+                leftBackDrive.setPower(-speed);
+                //encoder.encoderTurn(.5, 1, 3, 3);
             }
         }
         else {
@@ -116,7 +116,11 @@ public class pls_work_pls extends LinearOpMode {
             telemetry.update();
             sleep(1000);
             double speed = 0.3;
-            encoder.encoderTurn(.5, -1, 3, 3);
+                rightBackDrive.setPower(-speed);
+                rightFrontDrive.setPower(-speed);
+                leftFrontDrive.setPower(speed);
+                leftBackDrive.setPower(speed);
+            //encoder.encoderTurn(.5, -1, 3, 3);
 
             }
         }
@@ -161,37 +165,42 @@ public class pls_work_pls extends LinearOpMode {
     }
 
     public void stopMotors() {
-        encoder.robot.leftBackDrive.setPower(0);
-        encoder.robot.leftFrontDrive.setPower(0);
-        encoder.robot.rightBackDrive.setPower(0);
-        encoder.robot.rightFrontDrive.setPower(0);
+//        encoder.robot.leftBackDrive.setPower(0);
+//        encoder.robot.leftFrontDrive.setPower(0);
+//        encoder.robot.rightBackDrive.setPower(0);
+//        encoder.robot.rightFrontDrive.setPower(0);
+
+        leftBackDrive.setPower(0);
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
     }
 
-//    public void initialize() {
-//        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
-//        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-//        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
-//        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
-//
-//        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//
-//        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        topLiftMotor = hardwareMap.get(DcMotor.class, "topLiftMotor");
-//        bottomLiftMotor = hardwareMap.get(DcMotor.class, "bottomLiftMotor");
-//        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
-//
-//        chickenServo = hardwareMap.get(Servo.class, "chickenServo");
-//        FMRight = hardwareMap.get(Servo.class, "FMRight");
-//        FMLeft = hardwareMap.get(Servo.class, "FMLeft");
-//
-//        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
-//        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
-//    }
+    public void initialize() {
+        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        topLiftMotor = hardwareMap.get(DcMotor.class, "topLiftMotor");
+        bottomLiftMotor = hardwareMap.get(DcMotor.class, "bottomLiftMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+
+        chickenServo = hardwareMap.get(Servo.class, "chickenServo");
+        FMRight = hardwareMap.get(Servo.class, "FMRight");
+        FMLeft = hardwareMap.get(Servo.class, "FMLeft");
+
+        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
+        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
+    }
 }

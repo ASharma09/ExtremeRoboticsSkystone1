@@ -363,6 +363,13 @@ public class encoderDrive extends LinearOpMode {
         robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
+
+    public void stopMotors() {
+        robot.leftBackDrive.setPower(0);
+        robot.leftFrontDrive.setPower(0);
+        robot.rightBackDrive.setPower(0);
+        robot.rightFrontDrive.setPower(0);
+    }
 }
 
 
