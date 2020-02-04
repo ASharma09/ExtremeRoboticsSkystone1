@@ -1,9 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name = "encoderDrive", group = "ExtremeBot")
 
@@ -25,6 +31,10 @@ public class encoderDrive extends LinearOpMode {
         robot = new Robot();
     }
 
+    BNO055IMU imu;
+    Orientation             lastAngles = new Orientation();
+    double                  globalAngle, power = .30, correction;
+
     //turn 90 degrees is 2360
     //100 ticks is about 1 inch when going forward
     //111 ticks is about 1 inch strafing
@@ -37,7 +47,41 @@ public class encoderDrive extends LinearOpMode {
 
         robot.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        //resetAngle();
+
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.update();
+
+        // wait for start button.
+
+        //resetAngle();
+
+//         Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
@@ -50,7 +94,7 @@ public class encoderDrive extends LinearOpMode {
                 robot.rightFrontDrive.getCurrentPosition());
         telemetry.update();
 
-        waitForStart();
+        //waitForStart();
         //get servos to move
 
         telemetry.addData("Path", "Complete");
@@ -230,24 +274,24 @@ public class encoderDrive extends LinearOpMode {
                 robot.rightBackDrive.setPower(-speed);
             }
 
-            while (opModeIsActive() &&
-                    //           (runtime.seconds() < timeout) &&
-                    (robot.leftFrontDrive.isBusy() && robot.rightFrontDrive.isBusy() && robot.leftBackDrive.isBusy() && robot.rightBackDrive.isBusy()
-                    )
-                    && robot.leftFrontDrive.getCurrentPosition() < leftTicks) {
-
-                // Display it for the driver.
-                telemetry.addData("LFT, RFT", "Running to %7d :%7d", leftF, rightF);
-                telemetry.addData("LFP, RFP", "Running at %7d :%7d",
-                        robot.leftFrontDrive.getCurrentPosition(),
-                        robot.rightFrontDrive.getCurrentPosition());
-
-                telemetry.addData("LBT. RBT", "Running to %7d :%7d", leftB, rightB);
-                telemetry.addData("LBP, RBP", "Running at %7d :%7d",
-                        robot.leftBackDrive.getCurrentPosition(),
-                        robot.rightBackDrive.getCurrentPosition());
-                telemetry.update();
-            }
+//            while (opModeIsActive() &&
+//                    //           (runtime.seconds() < timeout) &&
+//                    (robot.leftFrontDrive.isBusy() && robot.rightFrontDrive.isBusy() && robot.leftBackDrive.isBusy() && robot.rightBackDrive.isBusy()
+//                    )
+//                    && robot.leftFrontDrive.getCurrentPosition() < leftTicks) {
+//
+//                // Display it for the driver.
+////                telemetry.addData("LFT, RFT", "Running to %7d :%7d", leftF, rightF);
+////                telemetry.addData("LFP, RFP", "Running at %7d :%7d",
+////                        robot.leftFrontDrive.getCurrentPosition(),
+////                        robot.rightFrontDrive.getCurrentPosition());
+////
+////                telemetry.addData("LBT. RBT", "Running to %7d :%7d", leftB, rightB);
+////                telemetry.addData("LBP, RBP", "Running at %7d :%7d",
+////                        robot.leftBackDrive.getCurrentPosition(),
+////                        robot.rightBackDrive.getCurrentPosition());
+//               // telemetry.update();
+//            }
 
             stopDriveBase();
         }
@@ -364,11 +408,75 @@ public class encoderDrive extends LinearOpMode {
 
     }
 
+    public double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    public void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
     public void stopMotors() {
         robot.leftBackDrive.setPower(0);
         robot.leftFrontDrive.setPower(0);
         robot.rightBackDrive.setPower(0);
         robot.rightFrontDrive.setPower(0);
+    }
+
+    public void toAngle() {
+        if(getAngle() > 0) {
+            while (getAngle() > 0) { //if getAngle() is pos it is to the left
+                //turn right
+//                telemetry.addData("turning right", getAngle());
+//                telemetry.update();
+//                sleep(1000);
+                double speed = 0.2;
+                robot.rightBackDrive.setPower(speed);
+                robot.rightFrontDrive.setPower(speed);
+                robot.leftFrontDrive.setPower(-speed);
+                robot.leftBackDrive.setPower(-speed);
+                //encoder.encoderTurn(.5, 1, 3, 3);
+            }
+        }
+        else {
+            while (getAngle() < 0) {
+                //turn left
+//            telemetry.addData("turning left", getAngle());
+//            telemetry.update();
+//            sleep(1000);
+                double speed = 0.2;
+                robot.rightBackDrive.setPower(-speed);
+                robot.rightFrontDrive.setPower(-speed);
+                robot.leftFrontDrive.setPower(speed);
+                robot.leftBackDrive.setPower(speed);
+                //encoder.encoderTurn(.5, -1, 3, 3);
+
+            }
+        }
+
+        stopMotors();
     }
 }
 

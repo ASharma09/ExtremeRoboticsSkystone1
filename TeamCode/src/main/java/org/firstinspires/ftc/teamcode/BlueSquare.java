@@ -22,21 +22,21 @@ import java.util.List;
 @Autonomous(name="BlueSquare")
 public class BlueSquare extends encoderDrive {
 
-    DcMotor leftBackDrive = null;
-    DcMotor leftFrontDrive = null;
-    DcMotor rightBackDrive = null;
-    DcMotor rightFrontDrive = null;
-
-    DcMotor topLiftMotor = null;
-    DcMotor bottomLiftMotor = null;
-    DcMotor armMotor = null;
-
-    Servo chickenServo = null;
-    Servo FMRight = null;
-    Servo FMLeft = null;
-
-    Servo rightClaw = null;
-    Servo leftClaw = null;
+//    DcMotor leftBackDrive = null;
+//    DcMotor leftFrontDrive = null;
+//    DcMotor rightBackDrive = null;
+//    DcMotor rightFrontDrive = null;
+//
+//    DcMotor topLiftMotor = null;
+//    DcMotor bottomLiftMotor = null;
+//    DcMotor armMotor = null;
+//
+//    Servo chickenServo = null;
+//    Servo FMRight = null;
+//    Servo FMLeft = null;
+//
+//    Servo rightClaw = null;
+//    Servo leftClaw = null;
 
     int skystonePosition = 0;
 
@@ -69,33 +69,33 @@ public class BlueSquare extends encoderDrive {
     public void runOpMode() {
         super.runOpMode();
 
-        initialize();
+        //initialize();
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-        imu.initialize(parameters);
-
-        telemetry.addData("Mode", "calibrating...");
-        telemetry.update();
-
-
-
-        // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
-        }
+//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//
+//        parameters.mode                = BNO055IMU.SensorMode.IMU;
+//        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+//        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+//        parameters.loggingEnabled      = false;
+//
+//        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+//        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+//        // and named "imu".
+//        imu = hardwareMap.get(BNO055IMU.class, "imu");
+//
+//        imu.initialize(parameters);
+//
+//        telemetry.addData("Mode", "calibrating...");
+//        telemetry.update();
+//
+//
+//
+//        // make sure the imu gyro is calibrated before continuing.
+//        while (!isStopRequested() && !imu.isGyroCalibrated())
+//        {
+//            sleep(50);
+//            idle();
+//        }
 
         //resetAngle();
 
@@ -105,7 +105,7 @@ public class BlueSquare extends encoderDrive {
 
         // wait for start button.
 
-        resetAngle();
+        //resetAngle();
 
         telemetry.addData("Status", "Initialized");
         //GO!!!
@@ -341,98 +341,98 @@ public class BlueSquare extends encoderDrive {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
-    private double getAngle()
-    {
-        // We experimentally determined the Z axis is the axis we want to use for heading angle.
-        // We have to process the angle because the imu works in euler angles so the Z axis is
-        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
-    }
-
-    private void resetAngle()
-    {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        globalAngle = 0;
-    }
-
-    public void stopMotors() {
-        leftBackDrive.setPower(0);
-        leftFrontDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-    }
-
-    public void toAngle(double angle) {
-        if(getAngle() > angle) {
-            while (getAngle() > angle) { //if getAngle() is pos it is to the left
-                //turn right
-
-                double speed = 0.1;
-                rightBackDrive.setPower(speed);
-                rightFrontDrive.setPower(speed);
-                leftFrontDrive.setPower(-speed);
-                leftBackDrive.setPower(-speed);
-
-            }
-        }
-        else {
-            while (getAngle() < angle) {
-                //turn left
-                double speed = 0.1;
-                rightBackDrive.setPower(-speed);
-                rightFrontDrive.setPower(-speed);
-                leftFrontDrive.setPower(speed);
-                leftBackDrive.setPower(speed);
-
-            }
-        }
-
-        stopMotors();
-    }
-
-    public void initialize() {
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
-
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        topLiftMotor = hardwareMap.get(DcMotor.class, "topLiftMotor");
-        bottomLiftMotor = hardwareMap.get(DcMotor.class, "bottomLiftMotor");
-        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
-
-        chickenServo = hardwareMap.get(Servo.class, "chickenServo");
-        FMRight = hardwareMap.get(Servo.class, "FMRight");
-        FMLeft = hardwareMap.get(Servo.class, "FMLeft");
-
-        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
-        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
-    }
+//    private double getAngle()
+//    {
+//        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+//        // We have to process the angle because the imu works in euler angles so the Z axis is
+//        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+//        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+//
+//        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+//
+//        if (deltaAngle < -180)
+//            deltaAngle += 360;
+//        else if (deltaAngle > 180)
+//            deltaAngle -= 360;
+//
+//        globalAngle += deltaAngle;
+//
+//        lastAngles = angles;
+//
+//        return globalAngle;
+//    }
+//
+//    private void resetAngle()
+//    {
+//        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        globalAngle = 0;
+//    }
+//
+//    public void stopMotors() {
+//        leftBackDrive.setPower(0);
+//        leftFrontDrive.setPower(0);
+//        rightBackDrive.setPower(0);
+//        rightFrontDrive.setPower(0);
+//    }
+//
+//    public void toAngle(double angle) {
+//        if(getAngle() > angle) {
+//            while (getAngle() > angle) { //if getAngle() is pos it is to the left
+//                //turn right
+//
+//                double speed = 0.1;
+//                rightBackDrive.setPower(speed);
+//                rightFrontDrive.setPower(speed);
+//                leftFrontDrive.setPower(-speed);
+//                leftBackDrive.setPower(-speed);
+//
+//            }
+//        }
+//        else {
+//            while (getAngle() < angle) {
+//                //turn left
+//                double speed = 0.1;
+//                rightBackDrive.setPower(-speed);
+//                rightFrontDrive.setPower(-speed);
+//                leftFrontDrive.setPower(speed);
+//                leftBackDrive.setPower(speed);
+//
+//            }
+//        }
+//
+//        stopMotors();
+//    }
+//
+//    public void initialize() {
+//        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackMotor");
+//        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontMotor");
+//        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackMotor");
+//        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontMotor");
+//
+//        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+//
+//        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        topLiftMotor = hardwareMap.get(DcMotor.class, "topLiftMotor");
+//        bottomLiftMotor = hardwareMap.get(DcMotor.class, "bottomLiftMotor");
+//        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+//
+//        chickenServo = hardwareMap.get(Servo.class, "chickenServo");
+//        FMRight = hardwareMap.get(Servo.class, "FMRight");
+//        FMLeft = hardwareMap.get(Servo.class, "FMLeft");
+//
+//        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
+//        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
+//    }
 
 
 }

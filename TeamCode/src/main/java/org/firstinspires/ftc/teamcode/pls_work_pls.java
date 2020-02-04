@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous (name="pls work pls")
 public class pls_work_pls extends LinearOpMode {
 
-    //encoderDrive encoder = new encoderDrive();
+    encoderDrive encoder = new encoderDrive();
 
     //Robot robot = new Robot();
     DcMotor leftBackDrive = null;
@@ -95,13 +95,13 @@ public class pls_work_pls extends LinearOpMode {
 
 
         sleep(2000);
-        if(angle > 0) {
-            while (angle > 0) { //if getAngle() is pos it is to the left
+        if(getAngle() > 0) {
+            while (getAngle() > 0) { //if getAngle() is pos it is to the left
                 //turn right
-                telemetry.addData("turning right", getAngle());
-                telemetry.update();
-                sleep(1000);
-                double speed = 0.3;
+//                telemetry.addData("turning right", getAngle());
+//                telemetry.update();
+//                sleep(1000);
+                double speed = 0.1;
                 rightBackDrive.setPower(speed);
                 rightFrontDrive.setPower(speed);
                 leftFrontDrive.setPower(-speed);
@@ -110,12 +110,12 @@ public class pls_work_pls extends LinearOpMode {
             }
         }
         else {
-            while (angle < 0) {
+            while (getAngle() < 0) {
             //turn left
-            telemetry.addData("turning left", getAngle());
-            telemetry.update();
-            sleep(1000);
-            double speed = 0.3;
+//            telemetry.addData("turning left", getAngle());
+//            telemetry.update();
+//            sleep(1000);
+            double speed = 0.1;
                 rightBackDrive.setPower(-speed);
                 rightFrontDrive.setPower(-speed);
                 leftFrontDrive.setPower(speed);
