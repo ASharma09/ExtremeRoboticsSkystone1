@@ -119,10 +119,17 @@ public class RedSquare extends encoderDrive {
 
 
         //telemetry.addData("before turn", getAngle());
-        encoderTurn(.5, 1, 3000, 3000);
-        telemetry.addData("turn has happened", "idk");
+        encoderTurn(.5, 1, 400, 400);
+        telemetry.addData("turn has happened", getAngle());
+        telemetry.addData("Global Angle", robot.globalAngle);
+        telemetry.addData("lastAngles", robot.lastAngles.firstAngle);
         telemetry.update();
         sleep(3000);
+
+        telemetry.addData("trying to turn", getAngle());
+        telemetry.addData("Global Angle", robot.globalAngle);
+        telemetry.addData("lastAngles", robot.lastAngles.firstAngle);
+        telemetry.update();
         toAngle();
         //toAngle();
 

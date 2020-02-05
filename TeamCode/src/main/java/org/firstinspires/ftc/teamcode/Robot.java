@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 /**
  * Extreme Robotics 2019
  */
@@ -26,7 +28,7 @@ public class Robot
 //    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
 //            (WHEEL_DIAMETER_INCHES * 3.1415);
 
-
+    com.qualcomm.robotcore.hardware.
     ElapsedTime runtime = new ElapsedTime();
     DcMotor leftBackDrive = null;
     DcMotor leftFrontDrive = null;
@@ -47,6 +49,10 @@ public class Robot
 
     Servo rightClaw = null;
     Servo leftClaw = null;
+
+    BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+    double                  globalAngle, power = .30, correction;
 
     //BNO055IMU gyro    = null;
 
@@ -74,6 +80,17 @@ public class Robot
 
         rightClaw = hwMap.get(Servo.class, "rightClaw");
         leftClaw = hwMap.get(Servo.class, "leftClaw");
+
+        imu = hwMap.get(BNO055IMU.class, "imu");
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        imu.initialize(parameters);
 
         //gyro = (BNO055IMU) hwMap.gyroSensor.get("gyro");
 

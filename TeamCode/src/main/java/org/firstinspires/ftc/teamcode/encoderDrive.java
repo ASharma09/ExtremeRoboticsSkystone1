@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Autonomous(name = "encoderDrive", group = "ExtremeBot")
 
 public class encoderDrive extends LinearOpMode {
-    Robot robot; //use from robot class
+    Robot robot = new Robot(); //use from robot class
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 1425.2;    // eg: ANDYMARK Motor Encoder
@@ -27,13 +27,9 @@ public class encoderDrive extends LinearOpMode {
 
     double[] factor = {1, 1, 1, 1};
 
-    public encoderDrive() {
-        robot = new Robot();
-    }
-
-    BNO055IMU imu;
-    Orientation             lastAngles = new Orientation();
-    double                  globalAngle, power = .30, correction;
+//    BNO055IMU imu;
+//    Orientation             lastAngles = new Orientation();
+//    double                  globalAngle, power = .30, correction;
 
     //turn 90 degrees is 2360
     //100 ticks is about 1 inch when going forward
@@ -47,25 +43,25 @@ public class encoderDrive extends LinearOpMode {
 
         robot.init(hardwareMap);
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
+//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//
+//        parameters.mode                = BNO055IMU.SensorMode.IMU;
+//        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+//        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+//        parameters.loggingEnabled      = false;
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+//        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        imu.initialize(parameters);
+//        imu.initialize(parameters);
 
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
         // make sure the imu gyro is calibrated before continuing.
-        while (!isStopRequested() && !imu.isGyroCalibrated())
+        while (!isStopRequested() && !robot.imu.isGyroCalibrated())
         {
             sleep(50);
             idle();
@@ -74,7 +70,7 @@ public class encoderDrive extends LinearOpMode {
         //resetAngle();
 
         telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
         telemetry.update();
 
         // wait for start button.
@@ -415,27 +411,27 @@ public class encoderDrive extends LinearOpMode {
         // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
         // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+        double deltaAngle = angles.firstAngle - robot.lastAngles.firstAngle;
 
         if (deltaAngle < -180)
             deltaAngle += 360;
         else if (deltaAngle > 180)
             deltaAngle -= 360;
 
-        globalAngle += deltaAngle;
+        robot.globalAngle += deltaAngle;
 
-        lastAngles = angles;
+        robot.lastAngles = angles;
 
-        return globalAngle;
+        return robot.globalAngle;
     }
 
     public void resetAngle()
     {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        robot.lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        globalAngle = 0;
+        robot.globalAngle = 0;
     }
 
     public void stopMotors() {
@@ -447,12 +443,12 @@ public class encoderDrive extends LinearOpMode {
 
     public void toAngle() {
         if(getAngle() > 0) {
-            while (getAngle() > 0) { //if getAngle() is pos it is to the left
+            while (getAngle() > 0 && opModeIsActive()) { //if getAngle() is pos it is to the left
                 //turn right
 //                telemetry.addData("turning right", getAngle());
 //                telemetry.update();
 //                sleep(1000);
-                double speed = 0.2;
+                double speed = 0.5;
                 robot.rightBackDrive.setPower(speed);
                 robot.rightFrontDrive.setPower(speed);
                 robot.leftFrontDrive.setPower(-speed);
@@ -461,12 +457,12 @@ public class encoderDrive extends LinearOpMode {
             }
         }
         else {
-            while (getAngle() < 0) {
+            while (getAngle() < 0 && opModeIsActive()) {
                 //turn left
 //            telemetry.addData("turning left", getAngle());
 //            telemetry.update();
 //            sleep(1000);
-                double speed = 0.2;
+                double speed = 0.5;
                 robot.rightBackDrive.setPower(-speed);
                 robot.rightFrontDrive.setPower(-speed);
                 robot.leftFrontDrive.setPower(speed);

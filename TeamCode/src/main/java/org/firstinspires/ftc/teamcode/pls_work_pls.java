@@ -106,6 +106,8 @@ public class pls_work_pls extends LinearOpMode {
                 rightFrontDrive.setPower(speed);
                 leftFrontDrive.setPower(-speed);
                 leftBackDrive.setPower(-speed);
+                telemetry.addData("angle", getAngle());
+                telemetry.update();
                 //encoder.encoderTurn(.5, 1, 3, 3);
             }
         }
