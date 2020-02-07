@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode2", group="Linear Opmode")
+//@TeleOp(name="Basic: Linear OpMode2", group="Linear Opmode")
 //@Disabled
 public class BasicOpMode_Linear extends LinearOpMode {
     Robot robot = new Robot();
@@ -100,7 +100,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        robot.runtime.reset();
+        //robot.runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -184,7 +184,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 //            robot.angleMotor.setPower(anglePower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
+            //telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLF, speedLB, speedRF, speedRB);
             telemetry.addData("LFP, RFP", "Running at %7d :%7d",
                     robot.leftFrontDrive.getCurrentPosition(),

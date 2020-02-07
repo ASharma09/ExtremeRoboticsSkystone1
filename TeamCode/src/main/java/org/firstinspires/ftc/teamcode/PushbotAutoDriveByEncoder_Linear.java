@@ -62,7 +62,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="PushbotAutoDriveByEncoder_Linear")
+//@Autonomous(name="PushbotAutoDriveByEncoder_Linear")
 //@Disabled
 
 public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {

@@ -96,7 +96,7 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        robot.runtime.reset();
+        //robot.runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -153,13 +153,30 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.armMotor.setPower(0);
             }
 
+            //PUT OLD CLAW POSITIONS BACK IN
+
+//            if (gamepad2.x) {
+//                robot.rightClaw.setPosition(-1);
+//                robot.leftClaw.setPosition(1);
+//            }
+//            if (gamepad2.y) {
+//                robot.rightClaw.setPosition(1);
+//                robot.leftClaw.setPosition(-1);
+//            }
+
             if (gamepad2.x) {
-                robot.rightClaw.setPosition(1);
-                robot.leftClaw.setPosition(-1);
+                robot.rightClaw.setPosition(.2);
             }
             if (gamepad2.y) {
-                robot.rightClaw.setPosition(-1);
-                robot.leftClaw.setPosition(1);
+                robot.rightClaw.setPosition(.7);
+            }
+
+            if (gamepad2.a){
+                robot.leftClaw.setPosition(.2);
+            }
+
+            if (gamepad2.b){
+                robot.leftClaw.setPosition(.7);
             }
 
 //            if (gamepad1.x)
@@ -182,15 +199,17 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.FMLeft.setPosition(1);
             }
 
-            if (gamepad2.a){
-                robot.chickenServo.setPosition(1);
-                //position 1 is down
-            }
+            //PUT CHICKEN WING BACK IN
 
-            if (gamepad2.b){
-                robot.chickenServo.setPosition(-1);
-                //position -1 is up
-            }
+//            if (gamepad2.a){
+//                robot.chickenServo.setPosition(1);
+//                //position 1 is down
+//            }
+//
+//            if (gamepad2.b){
+//                robot.chickenServo.setPosition(-1);
+//                //position -1 is up
+//            }
 
             while (gamepad2.dpad_up) {
                 robot.topLiftMotor.setPower(-.6);
@@ -259,7 +278,7 @@ public class ScrimmageTeleOp extends LinearOpMode {
             //robot.liftMotor.setPower(liftPower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
+            //telemetry.addData("Status", "Run Time: " + robot.runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", speedLB, speedRB);
             telemetry.addData("LFP, RFP", "Running at %7d :%7d",
                     robot.leftFrontDrive.getCurrentPosition(),

@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //WEBSITE: https://stemrobotics.cs.pdx.edu/node/7265
 
-@Autonomous(name="gyrytesty")
+//@Autonomous(name="gyrytesty")
 //@Disabled
 public class alsogyrotestugh extends LinearOpMode
 {

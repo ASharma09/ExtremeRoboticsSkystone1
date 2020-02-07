@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name = "encoderDrive", group = "ExtremeBot")
+//@Autonomous(name = "encoderDrive", group = "ExtremeBot")
 
 public class encoderDrive extends LinearOpMode {
     Robot robot = new Robot(); //use from robot class
@@ -27,9 +27,9 @@ public class encoderDrive extends LinearOpMode {
 
     double[] factor = {1, 1, 1, 1};
 
-//    BNO055IMU imu;
-//    Orientation             lastAngles = new Orientation();
-//    double                  globalAngle, power = .30, correction;
+    BNO055IMU imu;
+    Orientation             lastAngles = new Orientation();
+    double                  globalAngle, power = .30, correction;
 
     //turn 90 degrees is 2360
     //100 ticks is about 1 inch when going forward
@@ -43,19 +43,19 @@ public class encoderDrive extends LinearOpMode {
 
         robot.init(hardwareMap);
 
-//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-//
-//        parameters.mode                = BNO055IMU.SensorMode.IMU;
-//        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-//        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-//        parameters.loggingEnabled      = false;
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-//        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
 
-//        imu.initialize(parameters);
+//         Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+//         on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+//         and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
 
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
@@ -67,10 +67,10 @@ public class encoderDrive extends LinearOpMode {
             idle();
         }
 
-        //resetAngle();
+        resetAngle();
 
-        telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
+        telemetry.addData("Mode", "waiting for start in encoderDrive");
+        //telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
         telemetry.update();
 
         // wait for start button.
@@ -83,6 +83,7 @@ public class encoderDrive extends LinearOpMode {
 
         stopAndResetEncoder();
         runUsingEncoder();
+        //resetAngle();
 
          //Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0: LFP, RFP ->", "Starting at %7d :%7d",

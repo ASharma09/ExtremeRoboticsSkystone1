@@ -29,7 +29,7 @@ public class Robot
 //            (WHEEL_DIAMETER_INCHES * 3.1415);
 
     com.qualcomm.robotcore.hardware.
-    ElapsedTime runtime = new ElapsedTime();
+    //ElapsedTime runtime = new ElapsedTime();
     DcMotor leftBackDrive = null;
     DcMotor leftFrontDrive = null;
     DcMotor rightBackDrive = null;
@@ -52,7 +52,7 @@ public class Robot
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
-    double                  globalAngle, power = .30, correction;
+    double globalAngle;
 
     //BNO055IMU gyro    = null;
 

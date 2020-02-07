@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by femukund on 10/29/2017.
  */
 
-@TeleOp
+//@TeleOp
 public class ExtremeBotDrive extends LinearOpMode {
     Robot robot = new Robot();
 
