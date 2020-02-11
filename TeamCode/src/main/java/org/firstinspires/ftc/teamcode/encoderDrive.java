@@ -27,10 +27,6 @@ public class encoderDrive extends LinearOpMode {
 
     double[] factor = {1, 1, 1, 1};
 
-    BNO055IMU imu;
-    Orientation             lastAngles = new Orientation();
-    double                  globalAngle, power = .30, correction;
-
     //turn 90 degrees is 2360
     //100 ticks is about 1 inch when going forward
     //111 ticks is about 1 inch strafing
@@ -43,20 +39,6 @@ public class encoderDrive extends LinearOpMode {
 
         robot.init(hardwareMap);
 
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
-
-//         Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-//         on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-//         and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-        imu.initialize(parameters);
-
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
 
@@ -66,8 +48,6 @@ public class encoderDrive extends LinearOpMode {
             sleep(50);
             idle();
         }
-
-        resetAngle();
 
         telemetry.addData("Mode", "waiting for start in encoderDrive");
         //telemetry.addData("imu calib status", robot.imu.getCalibrationStatus().toString());
@@ -405,76 +385,6 @@ public class encoderDrive extends LinearOpMode {
 
     }
 
-    public double getAngle()
-    {
-        // We experimentally determined the Z axis is the axis we want to use for heading angle.
-        // We have to process the angle because the imu works in euler angles so the Z axis is
-        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
-
-        Orientation angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - robot.lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        robot.globalAngle += deltaAngle;
-
-        robot.lastAngles = angles;
-
-        return robot.globalAngle;
-    }
-
-    public void resetAngle()
-    {
-        robot.lastAngles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        robot.globalAngle = 0;
-    }
-
-    public void stopMotors() {
-        robot.leftBackDrive.setPower(0);
-        robot.leftFrontDrive.setPower(0);
-        robot.rightBackDrive.setPower(0);
-        robot.rightFrontDrive.setPower(0);
-    }
-
-    public void toAngle() {
-        if(getAngle() > 0) {
-            while (getAngle() > 0 && opModeIsActive()) { //if getAngle() is pos it is to the left
-                //turn right
-//                telemetry.addData("turning right", getAngle());
-//                telemetry.update();
-//                sleep(1000);
-                double speed = 0.5;
-                robot.rightBackDrive.setPower(speed);
-                robot.rightFrontDrive.setPower(speed);
-                robot.leftFrontDrive.setPower(-speed);
-                robot.leftBackDrive.setPower(-speed);
-                //encoder.encoderTurn(.5, 1, 3, 3);
-            }
-        }
-        else {
-            while (getAngle() < 0 && opModeIsActive()) {
-                //turn left
-//            telemetry.addData("turning left", getAngle());
-//            telemetry.update();
-//            sleep(1000);
-                double speed = 0.5;
-                robot.rightBackDrive.setPower(-speed);
-                robot.rightFrontDrive.setPower(-speed);
-                robot.leftFrontDrive.setPower(speed);
-                robot.leftBackDrive.setPower(speed);
-                //encoder.encoderTurn(.5, -1, 3, 3);
-
-            }
-        }
-
-        stopMotors();
-    }
 }
 
 

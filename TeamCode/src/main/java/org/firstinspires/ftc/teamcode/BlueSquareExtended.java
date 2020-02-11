@@ -149,7 +149,6 @@ public class BlueSquareExtended extends LinearOpMode {
             moveFoundation(1);
             encoderStrafe(speed, -1, 2150);
         }
-
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
             telemetry.addData("skystone path ", 3);

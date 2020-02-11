@@ -58,22 +58,22 @@ import com.qualcomm.robotcore.util.Range;
 
 /**
  * Gamepad1:
- *      sticks move the robot
- *      left bumper makes robot slower
- *      right bumper makes robot faster
- *      button A resets the encoder values
- *      button Y moves armMotor back
- *      button X moves armMotor forward
- *      dpad up makes servos close
- *      dpad down makes servos open
+ *      sticks move the robot                   -
+ *      left bumper makes robot slower          -
+ *      right bumper makes robot faster         -
+ *      button A resets the encoder values      -
+ *      button Y moves armMotor back            -
+ *      button X moves armMotor forward         -
+ *      dpad up makes foundation movers open    -
+ *      dpad down makes foundation movers close -
  *
  * Gamepad2:
- *      button Y moves foundation movers up
- *      button X moves foundation movers down
- *      button A moves chicken wing down
- *      button B moves chicken wing up
- *      dpad up moves lift motors up
- *      dpad down moves lift motors down
+ *      button Y makes claw servo close
+ *      button X makes claw servos open
+ *      button A moves chicken wing down        -
+ *      button B moves chicken wing up          -
+ *      dpad up moves lift motors up            -
+ *      dpad down moves lift motors down        -
  */
 
 public class ScrimmageTeleOp extends LinearOpMode {
@@ -155,29 +155,29 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             //PUT OLD CLAW POSITIONS BACK IN
 
-//            if (gamepad2.x) {
-//                robot.rightClaw.setPosition(-1);
-//                robot.leftClaw.setPosition(1);
-//            }
-//            if (gamepad2.y) {
-//                robot.rightClaw.setPosition(1);
-//                robot.leftClaw.setPosition(-1);
-//            }
-
             if (gamepad2.x) {
-                robot.rightClaw.setPosition(.2);
+                robot.rightClaw.setPosition(-1);
+                robot.leftClaw.setPosition(1);
             }
             if (gamepad2.y) {
-                robot.rightClaw.setPosition(.7);
+                robot.rightClaw.setPosition(1);
+                robot.leftClaw.setPosition(-1);
             }
 
-            if (gamepad2.a){
-                robot.leftClaw.setPosition(.2);
-            }
-
-            if (gamepad2.b){
-                robot.leftClaw.setPosition(.7);
-            }
+//            if (gamepad2.x) {
+//                robot.rightClaw.setPosition(.2);
+//            }
+//            if (gamepad2.y) {
+//                robot.rightClaw.setPosition(.7);
+//            }
+//
+//            if (gamepad2.a){
+//                robot.leftClaw.setPosition(.2);
+//            }
+//
+//            if (gamepad2.b){
+//                robot.leftClaw.setPosition(.7);
+//            }
 
 //            if (gamepad1.x)
 //            {
@@ -201,15 +201,15 @@ public class ScrimmageTeleOp extends LinearOpMode {
 
             //PUT CHICKEN WING BACK IN
 
-//            if (gamepad2.a){
-//                robot.chickenServo.setPosition(1);
-//                //position 1 is down
-//            }
-//
-//            if (gamepad2.b){
-//                robot.chickenServo.setPosition(-1);
-//                //position -1 is up
-//            }
+            if (gamepad2.a){
+                robot.chickenServo.setPosition(1);
+                //position 1 is down
+            }
+
+            if (gamepad2.b){
+                robot.chickenServo.setPosition(-1);
+                //position -1 is up
+            }
 
             while (gamepad2.dpad_up) {
                 robot.topLiftMotor.setPower(-.6);

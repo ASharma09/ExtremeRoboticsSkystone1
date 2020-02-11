@@ -100,28 +100,29 @@ public class RedSquareExtended extends LinearOpMode {
         if (skystonePosition == 1) {
             toAngle();
             //encoderBack(0.2, 350);
-            encoderBack(0.7, 250);
+            encoderBack(0.8, 240);
             encoderStrafe(0.5, 1, 100);
             toAngle();
             //encoderTurn(0.3, 1, 60, 60);
-            moveChicken(1);
-            encoderStrafe(speed, -1, 520);
+            moveChicken(1); //grabs first block
+            encoderStrafe(speed, -1, 535);
             toAngle();
-            encoderForward(0.75, 2300);
-            moveChicken(-1);
+            encoderForward(0.8, 2300);
+            moveChicken(-1); //releases first block
+            encoderStrafe(.3, -1, 50);
             toAngle();
             //encoderTurn(0.3, 1, 40, 40);
             //encoderStrafe(0.5, -1, 50);
-            encoderBack(0.8, 3000);
-            encoderBack(0.45, 400);
+            encoderBack(0.75, 3000);
+            encoderBack(1, 400);
             encoderStrafe(speed, 1, 500);
             toAngle();
-            moveChicken(1);
-            encoderStrafe(speed, -1, 870);
+            moveChicken(1); //grabs second block
+            encoderStrafe(speed, -1, 760);
             toAngle();
-            encoderForward(0.75, 3600);
-            moveChicken(-1);
-            encoderBack(1, 550);
+            encoderForward(0.8, 3600);
+            moveChicken(-1); //releases second block
+            encoderBack(1, 800);
 
 
 /*            encoderForward(0.6, 1650);
@@ -137,27 +138,31 @@ public class RedSquareExtended extends LinearOpMode {
         }
         if (skystonePosition == 2 || skystonePosition == 0) {
             //move a bit less to the right than position 1
-            encoderBack(0.2, 60);
-            encoderStrafe(0.5, 1, 125);
+            toAngle();
+            encoderForward(0.75, 130);
+            encoderStrafe(0.3, 1, 65);
             //encoderTurn(0.3, 1, 60, 60);
             moveChicken(1);
-            encoderStrafe(speed, -1, 520);
-            encoderForward(0.5, 1900);
+            encoderStrafe(0.3, -1, 600);
+            toAngle();
+            encoderForward(0.75, 1900);
             moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
+            encoderStrafe(.3, -1, 50);
+            toAngle();
             //encoderTurn(0.3, 1, 50, 50);
 
-            encoderBack(0.5, 3300);
-            encoderForward(0.3, 344);
-            encoderStrafe(speed, 1, 460);
+            encoderBack(0.75, 3000);
+            encoderBack(0.75, 350);
+            encoderForward(0.7, 330);
+            encoderStrafe(0.3, 1, 600);
             moveChicken(1);
-            encoderStrafe(speed, -1, 650);
-            encoderForward(0.5, 3100);
+            encoderStrafe(0.3, -1, 670);
+            toAngle();
+            encoderForward(0.75, 3100);
             moveChicken(-1);
-            encoderBack(0.5, 600);
+            encoderBack(1 , 750);
 
-
-            encoderForward(0.5, 2300);
+/*            encoderForward(0.5, 2300);
             encoderTurn(0.5, -1, 730, 730);
             encoderStrafe(0.5, -1, 500);
             encoderStrafe(0.5, 1, 650);
@@ -166,7 +171,7 @@ public class RedSquareExtended extends LinearOpMode {
             sleep(1000);
             encoderBack(0.5, 2000);
             moveFoundation(1);
-            encoderStrafe(0.5, 1, 2150);
+            encoderStrafe(0.5, 1, 2150);*/
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
