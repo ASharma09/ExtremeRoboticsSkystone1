@@ -50,6 +50,8 @@ public class BlueSquareExtended extends LinearOpMode {
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
+    private int toAngleTicks = 25;
+
     @Override
     public void runOpMode() {
         initialize();
@@ -86,33 +88,48 @@ public class BlueSquareExtended extends LinearOpMode {
 
         waitForStart();
 
-        encoderStrafe(0.2, 1, 830);
+        encoderStrafe(0.5, 1, 830);
         skystonePosition = runVuforia();
-        encoderStrafe(0.2, 1, 540);
+        encoderStrafe(0.5, 1, 560);
+        toAngle(toAngleTicks);
 
         if (skystonePosition == 1) {
             //encoderBack(0.2, 350);
             telemetry.addData("skystone path ", 1);
             telemetry.update();
             encoderForward(0.5, 770);
+            encoderStrafe(.5, 1, 45);
 
-            encoderStrafe(0.2, 1, 560);
+            //encoderStrafe(0.2, 1, 560);
 
             moveChicken(1);
-            encoderStrafe(0.5, -1, 420);
-            encoderBack(0.5, 2600);
+            encoderStrafe(0.5, -1, 475);
+            toAngle(toAngleTicks);
+            encoderBack(.7, 2600);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
+            toAngle(toAngleTicks);
 
-            encoderForward(speed, 500);
+            encoderForward(0.75, 3000);
+            encoderForward(0.3, 400);
+            encoderStrafe(speed, 1, 500);
+            toAngle(toAngleTicks);
+            moveChicken(1); //grabs second block
+            encoderStrafe(speed, -1, 760);
+            toAngle(toAngleTicks);
+            encoderBack(0.8, 3600);
+            moveChicken(-1); //releases second block
+            encoderForward(1, 800);
 
-            encoderBack(0.5, 2200);
-            encoderForward(speed, 600);
-            encoderTurn(0.5, -1, 730, 730);
-            encoderForward(0.5, 700);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
+            //encoderForward(speed, 500);
+
+//            encoderBack(0.5, 2200);
+//            encoderForward(speed, 600);
+//            encoderTurn(0.5, -1, 730, 730);
+//            encoderForward(0.5, 700);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
         }
         if (skystonePosition == 2) {
             //move a bit less to the right than position 1
@@ -120,62 +137,68 @@ public class BlueSquareExtended extends LinearOpMode {
             telemetry.update();
             encoderForward(0.2, 510);
 
-            encoderStrafe(0.2, 1, 560);
+            //encoderStrafe(0.2, 1, 560);
 
             moveChicken(1);
             encoderStrafe(speed, -1, 470);
-            encoderBack(speed, 2400);
+            toAngle(35);
+            encoderBack(.7, 2400);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
+            toAngle(toAngleTicks);
 
             encoderForward(0.4, 3400);
             //encoderForward(0.3, 344);
+            toAngle(toAngleTicks);
             encoderStrafe(speed, 1, 600);
             moveChicken(1);
             encoderStrafe(speed, -1, 625);
-            encoderBack(0.5, 3250);
+            toAngle(toAngleTicks);
+            encoderBack(.7, 3250);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
 
-            encoderForward(speed, 500);
+            encoderForward(speed, 600);
 
-            encoderBack(speed, 2150);
-            encoderForward(0.4, 500);
-            encoderTurn(0.3, -1, 730, 730);
-            encoderForward(0.3, 300);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.3, 2000);
-            moveFoundation(1);
-            encoderStrafe(speed, -1, 2150);
+//            encoderBack(speed, 2150);
+//            encoderForward(0.4, 500);
+//            encoderTurn(0.3, -1, 730, 730);
+//            encoderForward(0.3, 300);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.3, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(speed, -1, 2150);
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
             telemetry.addData("skystone path ", 3);
             telemetry.update();
-            encoderForward(0.2, 90);
+            encoderForward(0.75, 90);
 
-            encoderStrafe(0.2, 1, 590);
+            encoderStrafe(0.2, 1, 200);
 
             moveChicken(1);
             //bring chicken down
-            encoderStrafe(speed, -1, 460);
-            encoderBack(0.6, 1800);
+            encoderStrafe(speed, -1, 610 );
+            toAngle(toAngleTicks);
+            encoderBack(0.75, 1800);
             //release chicken wing
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
-
-            encoderForward(0.6, 3200);
-            encoderBack(0.5, 310);
-            encoderStrafe(speed, 1, 460);
+            toAngle(toAngleTicks);
+            encoderForward(0.75, 3400);
+            encoderBack(0.6, 310);
+            encoderStrafe(speed, 1, 650);
+            toAngle(toAngleTicks);
             moveChicken(1);
             //bring down chicken wing
-            encoderStrafe(speed, -1, 510);
-            encoderBack(0.5, 2900);
+            encoderStrafe(speed, -1, 680);
+            toAngle(toAngleTicks);
+            encoderBack(0.75, 2900);
             moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
 
-            encoderForward(speed, 500);
+            encoderForward(1, 650);
 
 //            encoderBack(0.5, 2200);
 //            encoderForward(0.5, 600);
@@ -254,10 +277,10 @@ public class BlueSquareExtended extends LinearOpMode {
                                     i++;
 
                                     if (recognition.getLeft() < 150 && recognition.getRight() < 600) {
-                                        position[2] = recognition.getLabel();
+                                        position[1] = recognition.getLabel();
                                     }
                                     if (recognition.getLeft() > 240 && recognition.getRight() > 630) {
-                                        position[1] = recognition.getLabel();
+                                        position[2] = recognition.getLabel();
                                     }
                                     //isdone++;
                                     //if (isdone==2) {
@@ -357,7 +380,7 @@ public class BlueSquareExtended extends LinearOpMode {
 
             globalAngle = 0;
         }
-        private void toAngle () {
+        private void toAngle (int ticks) {
             if (getAngle() > 0) {
                 //if getAngle() is pos it is to the left
                 //turn right
@@ -372,7 +395,7 @@ public class BlueSquareExtended extends LinearOpMode {
 //                telemetry.update();
 //                //sleep(100);
 //                i++;
-                    encoderTurn(.5, -1, 25, 25);
+                    encoderTurn(.5, -1, ticks, ticks);
                 }
 //                double speed = 0.5;
                 //
@@ -390,7 +413,7 @@ public class BlueSquareExtended extends LinearOpMode {
 //                telemetry.update();
 //                //sleep(100);
 //                i++;
-                    encoderTurn(.5, 1, 25, 25);
+                    encoderTurn(.5, 1, ticks, ticks);
                 }
             }
 

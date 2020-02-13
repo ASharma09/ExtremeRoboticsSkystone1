@@ -96,30 +96,31 @@ public class RedSquareExtended extends LinearOpMode {
         //telemetry.addData("before turn", getAngle());
 
         //toAngle();
+        int toAngleTicks = 25;
 
         if (skystonePosition == 1) {
-            toAngle();
+            toAngle(toAngleTicks);
             //encoderBack(0.2, 350);
             encoderBack(0.8, 240);
             encoderStrafe(0.5, 1, 100);
-            toAngle();
+            toAngle(toAngleTicks);
             //encoderTurn(0.3, 1, 60, 60);
             moveChicken(1); //grabs first block
             encoderStrafe(speed, -1, 535);
-            toAngle();
+            toAngle(toAngleTicks);
             encoderForward(0.8, 2300);
             moveChicken(-1); //releases first block
             encoderStrafe(.3, -1, 50);
-            toAngle();
+            toAngle(toAngleTicks);
             //encoderTurn(0.3, 1, 40, 40);
             //encoderStrafe(0.5, -1, 50);
             encoderBack(0.75, 3000);
             encoderBack(1, 400);
             encoderStrafe(speed, 1, 500);
-            toAngle();
+            toAngle(toAngleTicks);
             moveChicken(1); //grabs second block
             encoderStrafe(speed, -1, 760);
-            toAngle();
+            toAngle(toAngleTicks);
             encoderForward(0.8, 3600);
             moveChicken(-1); //releases second block
             encoderBack(1, 800);
@@ -138,17 +139,17 @@ public class RedSquareExtended extends LinearOpMode {
         }
         if (skystonePosition == 2 || skystonePosition == 0) {
             //move a bit less to the right than position 1
-            toAngle();
+            toAngle(toAngleTicks);
             encoderForward(0.75, 130);
             encoderStrafe(0.3, 1, 65);
             //encoderTurn(0.3, 1, 60, 60);
             moveChicken(1);
             encoderStrafe(0.3, -1, 600);
-            toAngle();
+            toAngle(toAngleTicks);
             encoderForward(0.75, 1900);
             moveChicken(-1);
             encoderStrafe(.3, -1, 50);
-            toAngle();
+            toAngle(toAngleTicks);
             //encoderTurn(0.3, 1, 50, 50);
 
             encoderBack(0.75, 3000);
@@ -157,7 +158,7 @@ public class RedSquareExtended extends LinearOpMode {
             encoderStrafe(0.3, 1, 600);
             moveChicken(1);
             encoderStrafe(0.3, -1, 670);
-            toAngle();
+            toAngle(toAngleTicks);
             encoderForward(0.75, 3100);
             moveChicken(-1);
             encoderBack(1 , 750);
@@ -175,34 +176,42 @@ public class RedSquareExtended extends LinearOpMode {
         }
         if (skystonePosition == 3) {
             //move the same amount to the left as position 2
-            encoderForward(0.2, 390);
+            toAngle(toAngleTicks);
+            encoderForward(0.4, 405);
+            encoderStrafe(speed, 1, 50);
             //encoderTurn(0.3, 1, 70, 70);
             moveChicken(1);
             encoderStrafe(speed, -1, 450);
-            encoderForward(0.5, 2000);
+            toAngle(toAngleTicks);
+            encoderForward(.8, 1750);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
+            toAngle(toAngleTicks);
             //encoderTurn(0.3, 1, 30, 30);
 
-            encoderBack(0.8, 3800);
-            encoderForward(.5,600);
-            encoderStrafe(speed, 1, 680);
+            encoderBack(0.8, 2775);
+            //encoderBack(0.3, 200);
+            //encoderForward(.6,600);
+            toAngle(toAngleTicks);
+            encoderStrafe(speed, 1, 600);
+            toAngle(toAngleTicks);
             moveChicken(1);
-            encoderStrafe(speed, -1, 620);
-            encoderForward(0.5, 3000);
+            encoderStrafe(speed, -1, 630);
+            toAngle(toAngleTicks);
+            encoderForward(1, 3000);
             moveChicken(-1);
+            encoderBack(.7, 700);
 
-
-            encoderForward(0.5, 2300);
-            //encoderTurn(0.5, -1, 730, 730);
-            encoderStrafe(0.5, -1, 500);
-            encoderStrafe(0.5, 1, 650);
-            encoderForward(0.5, 450);
-            moveFoundation(-1);
-            sleep(1000);
-            encoderBack(0.5, 2000);
-            moveFoundation(1);
-            encoderStrafe(0.5, 1, 2150);
+//            encoderForward(0.5, 2300);
+//            //encoderTurn(0.5, -1, 730, 730);
+//            encoderStrafe(0.5, -1, 500);
+//            encoderStrafe(0.5, 1, 650);
+//            encoderForward(0.5, 450);
+//            moveFoundation(-1);
+//            sleep(1000);
+//            encoderBack(0.5, 2000);
+//            moveFoundation(1);
+//            encoderStrafe(0.5, 1, 2150);
         }
     }
 
@@ -375,7 +384,7 @@ public class RedSquareExtended extends LinearOpMode {
 
         globalAngle = 0;
     }
-    private void toAngle() {
+    private void toAngle(int ticks) {
         if(getAngle() > 0) {
             //if getAngle() is pos it is to the left
                 //turn right
@@ -390,7 +399,7 @@ public class RedSquareExtended extends LinearOpMode {
 //                telemetry.update();
 //                //sleep(100);
 //                i++;
-                encoderTurn(.5, -1, 25, 25);
+                encoderTurn(.5, -1, ticks, ticks);
             }
 //                double speed = 0.5;
                 //
@@ -409,7 +418,7 @@ public class RedSquareExtended extends LinearOpMode {
 //                telemetry.update();
 //                //sleep(100);
 //                i++;
-                encoderTurn(.5, 1, 25, 25);
+                encoderTurn(.5, 1, ticks, ticks);
             }
         }
 
