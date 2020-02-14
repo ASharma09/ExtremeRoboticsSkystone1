@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="ScrimmageTeleOp", group="Linear Opmode")
+@TeleOp(name="NewarkTournamentTeleOp", group="Linear Opmode")
 
 //TELEOP KEY
 
@@ -142,16 +142,6 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
-            while (gamepad1.y) {
-                robot.armMotor.setPower(.3);
-            }
-            while (gamepad1.x) {
-                robot.armMotor.setPower(-0.3);
-            }
-
-            if (!gamepad1.x && !gamepad1.y) {
-                robot.armMotor.setPower(0);
-            }
 
             //PUT OLD CLAW POSITIONS BACK IN
 
@@ -211,15 +201,15 @@ public class ScrimmageTeleOp extends LinearOpMode {
                 //position -1 is up
             }
 
-            while (gamepad2.dpad_up) {
-                robot.topLiftMotor.setPower(-.6);
-                robot.bottomLiftMotor.setPower(.6);
+            if (gamepad2.dpad_up) {
+                robot.topLiftMotor.setPower(-.75);
+                robot.bottomLiftMotor.setPower(.75);
             }
 
 
-            while (gamepad2.dpad_down) {
-                robot.topLiftMotor.setPower(.6);
-                robot.bottomLiftMotor.setPower(-.6);
+            if (gamepad2.dpad_down) {
+                robot.topLiftMotor.setPower(.8);
+                robot.bottomLiftMotor.setPower(-.8);
             }
 
             if (!gamepad2.dpad_up && !gamepad2.dpad_down) {
