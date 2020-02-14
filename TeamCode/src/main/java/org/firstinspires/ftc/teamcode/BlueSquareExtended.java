@@ -97,21 +97,21 @@ public class BlueSquareExtended extends LinearOpMode {
             //encoderBack(0.2, 350);
             telemetry.addData("skystone path ", 1);
             telemetry.update();
-            encoderForward(0.5, 770);
-            encoderStrafe(.5, 1, 45);
+            encoderForward(0.4, 770);
+            encoderStrafe(.3, 1, 45);
 
             //encoderStrafe(0.2, 1, 560);
 
             moveChicken(1);
-            encoderStrafe(0.5, -1, 475);
+            encoderStrafe(0.3, -1, 475);
             toAngle(toAngleTicks);
-            encoderBack(.7, 2600);
+            encoderBack(.5, 2600);
             moveChicken(-1);
             encoderStrafe(speed, -1, 50);
             toAngle(toAngleTicks);
 
-            encoderForward(0.75, 3000);
-            encoderForward(0.3, 400);
+            encoderForward(0.4, 850);
+/*            encoderForward(0.3, 400);
             encoderStrafe(speed, 1, 500);
             toAngle(toAngleTicks);
             moveChicken(1); //grabs second block
@@ -119,7 +119,7 @@ public class BlueSquareExtended extends LinearOpMode {
             toAngle(toAngleTicks);
             encoderBack(0.8, 3600);
             moveChicken(-1); //releases second block
-            encoderForward(1, 800);
+            encoderForward(1, 800);*/
 
             //encoderForward(speed, 500);
 
@@ -135,30 +135,29 @@ public class BlueSquareExtended extends LinearOpMode {
             //move a bit less to the right than position 1
             telemetry.addData("skystone path ", 2);
             telemetry.update();
-            encoderForward(0.2, 510);
+            encoderForward(0.5, 510);
 
-            //encoderStrafe(0.2, 1, 560);
+            encoderStrafe(0.5, 1, 180);
 
             moveChicken(1);
-            encoderStrafe(speed, -1, 470);
-            toAngle(35);
-            encoderBack(.7, 2400);
+            encoderStrafe(speed, -1, 465);
+            toAngle(toAngleTicks);
+            encoderBack(.75, 2400);
             moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
+            encoderStrafe(speed, 1, 50);
             toAngle(toAngleTicks);
 
-            encoderForward(0.4, 3400);
+            encoderForward(0.75, 3200);
+            encoderForward(0.35, 400);
             //encoderForward(0.3, 344);
-            toAngle(toAngleTicks);
-            encoderStrafe(speed, 1, 600);
+            encoderStrafe(speed, 1, 800);
+            encoderForward(0.4, 100);
             moveChicken(1);
-            encoderStrafe(speed, -1, 625);
+            encoderStrafe(speed, -1, 955);
             toAngle(toAngleTicks);
-            encoderBack(.7, 3250);
+            encoderBack(.75, 3250);
             moveChicken(-1);
-            encoderStrafe(speed, -1, 50);
-
-            encoderForward(speed, 600);
+            encoderForward(0.8, 680);
 
 //            encoderBack(speed, 2150);
 //            encoderForward(0.4, 500);
